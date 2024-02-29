@@ -1,0 +1,164 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- subtiers.hbs for our Subscription Tiers Entity: Create, Read, and Update Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions.html">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres.html">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable.html">MoviesGenresTable</a>
+    </nav>
+    <head>
+    <title>Subscription Tiers</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 3 actions here as we do not have a separate "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "insert") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "update") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "none";
+            }
+        }
+    function newSubTier() { showform('insert'); }
+    function updateSubTier(newSubTierID) { 
+        showform('update');
+        document.getElementById("update-subTier-id").value = newSubTierID;
+     }
+    function browseSubTier() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+
+<body onload="browseSubTier()">
+
+    <h2>Subscriptions Tiers Entity</h2>
+        <p> There are only ADD and UPDATE functionality for this entity as removing a Subscription Tier 
+            is not possible within the Subscriptions entity as subTierID is NOT NULL. New types of 
+            Subscription Tiers can been added  ("Premium Plus," for example) and if something needs to be adjusted, for example, a price increase, 
+            that can be done using the UPDATE form down below. </p>
+
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display Add Form</a> </p>
+<table border="1" cellpadding="2", id = "subTier-table">
+  <tr>
+    <th><a href="#" onClick="newSubTier()">Add Subscription Tier</a></th>
+    <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>EDIT</th>
+        </tr>
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[subTierID]}}">
+  </tr>
+   {{!-- Body section --}}
+        {{!-- For each row, print the subTierID, subscriptionType, and price in order --}}
+        
+            <td>{{this.[subTierID]}}</td>
+            <td>{{this.[subscriptionType]}}</td>
+            <td>{{this.[price]}}</td>
+            <td><button onClick="updateSubTier({{this.[subTierID]}})">Edit</button></td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+{{!--<script src="./js/delete_user.js"></script> --}}
+
+</div> 
+<!-- INSERT Subscription Tier -->
+<div id="insert">
+    <legend><h2>Add Subscription Tier:</h2></legend>
+    <p> Here we can add a new SubscriptionTier, for example, if we wanted to add a "Premium Plus" plan, we 
+        could do so using the below attributes. (Nothing here can be NULL).</p>
+    <form id="add-subTier-form">
+        <fieldset>
+      <label for="input-subscriptionType">Subscription Type: </label>
+      <input type="text" name="input-subscriptionType" id="input-subscriptionType">
+      
+      <label for="input-price">Price: </label>
+      <input type="number" name="input-price" id="input-price">
+  
+          <input class="btn" type="submit" id="addSubTier" value="Add Subscription Tier" onClick="browseSubTier()">
+          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
+    </fieldset>
+	</form> 
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_subtier.js"></script>
+</div>
+<p>&nbsp;</p>
+
+<!-- UPDATE Subscription Tier -->
+<div id="update">
+  <legend><strong>Update Subcription Tier</strong></legend>
+    <form id="update-subTier-form-ajax">
+        
+          <input type="hidden" name="update-subTier-id" id="update-subTier-id"/>
+
+          <label for="input-update-subscriptionType">Subscription Type: </label>
+          <input type="text" name="input-update-subscriptionType" id="input-update-subscriptionType">
+
+          <label for="input-update-price">Price: </label>
+          <input type="text" name="input-update-price" id="input-update-price">
+
+          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update Subscription Tier" onClick="browseSubTier()">
+          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
+	</form>
+<script src="./js/update_subtier.js"></script> 
+</div>
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>

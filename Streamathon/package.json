@@ -1,0 +1,21 @@
+{
+  "name": "streamathon",
+  "version": "1.0.0",
+  "description": "The portfolio project for CS 340: Intro to Databases. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mysql",
+    "node"
+  ],
+  "author": "Hanjun Kim and Christian McKinnon",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "forever": "^0.14.2",
+    "mysql": "^2.18.1"
+  }
+}

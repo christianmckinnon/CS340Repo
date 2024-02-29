@@ -1,0 +1,95 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- index.hbs This is our "Homepage" that describes our Database and Entities -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+     <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions.html">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres.html">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable.html">MoviesGenresTable</a>
+    </nav>
+    <main>
+        <section>
+            <!--Title of our Company / Database and Website-->
+            <h2>Streamathon: A Movie Streaming Service for Everyone!</h2>
+
+            <!--The outline from our PDF report-->
+            <p>Streamathon is a relatively new movie-streaming platform, where its 
+                2,000 daily-active users have access to over 300 different movie titles 
+                on-demand. Our team intends to build a database designed to keep track of 
+                user-based movie ratings and subscriptions to gauge which movie contracts 
+                have been most profitable. Additional key metrics will include customer profile 
+                details and movie genre preferences, to provide insights that inform strategic 
+                decisions at the company’s business intelligence unit. Ultimately, these insights 
+                will play a pivotal role in determining how Streamathon curates and maintains its 
+                content catalog.
+            </p>
+            <!--Description of Entities using an unordered list-->
+            <p>The below lists our entities and details brief descriptions about them:</p>
+            <body>
+                <h1>Streamathon Entities</h1>
+                <ul>
+                    <li>
+                        <strong>Movies:</strong> Represents Streamathon’s movies on offer and their details, with attributes including the movieID, title, director, year, duration, and language of the film.
+                    </li>
+                    <li>
+                        <strong>Users:</strong> Records the details and preferences of Streamathon’s 2,000+ users, including the attributes userID, first and last name, email, and age.
+                    </li>
+                    <li>
+                        <strong>Subscriptions:</strong> This entity represents users' status and whether autorenew has been activated for a particular user’s subscription. Its attributes include subscriptionID, subTypeID, autoRenew, and subscriptionStatus.
+                    </li>
+                    <li>
+                        <strong>SubscriptionTiers:</strong> An entity that includes the choice of subscriptions available for Streamathon users. They can select from Basic, Ad-Free, and Premium tiers that are priced at 5.99, 9.99, and 14.99 USD respectively. User’s Subscriptions are billed monthly. Its entities are subTierID, subscriptionType, and price.
+                    </li>
+                    <li>
+                        <strong>Genres:</strong> In this entity, we outline the different possible genres that will correspond to Movies as they have a M:N relationship. Its attributes are genreID and genreType.
+                    </li>
+                    <li>
+                        <strong>Ratings:</strong> This is an entity that functions as an intersection table / composite entity. It represents Ratings as a link between Movies and Users. This is the case as a user can rate many Movies, and a Movie can be rated by many Users. After viewing a movie, Users have the option to award a rating between 1 and 5 stars. Within the table, we can view the rating an individual user assigned to a movie. The attributes include ratingID, userID, movieID, userRating, and ratingDate.
+                    </li>
+                    <li>
+                        <strong>MoviesGenresTable:</strong> An intersection table that keeps track of the M:N relationship between the Movies and Genres entities. The table will contain as foreign keys, movieID and genreID, as attributes, that are references to both primary keys from their respective tables.
+                    </li>
+                </ul>
+            </body>
+       </section>
+    </main>
+    <!-- Copyright of our team as footer -->
+    <footer>
+        <p>
+            &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        </p>
+    </footer>
+</body>
+</html>

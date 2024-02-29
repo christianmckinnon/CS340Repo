@@ -1,0 +1,228 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- movies.hbs for our Movies Entity: Create, Read, Update, and Delete Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions.html">Subscriptions</a>
+        <a href = "subtiers.html">Subscription Tiers</a>
+        <a href = "genres.html">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable.html">MoviesGenresTable</a>
+    </nav>
+    <head>
+    <title>Movies</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 3 actions here as we do not have a separate "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "insert") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "update") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "none";
+            }
+        }
+    function newMovie() { showform('insert'); }
+    function updateMovie(newMovieID) { 
+        showform('update');
+        document.getElementById("update-movie-id").value = newMovieID;
+     }
+    function deleteMovie(newMovieID){ showform ('delete'); }
+    function browseMovieMovie() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+
+<body onload="browseMovieMovie()">
+
+<h2>Movies Entity</h2>
+<p>Within this entity, a database administrator can ADD, UPDATE, or DELETE a movie from 
+    the Streamathon catalog. If a movie is deleted, its corresponding Rating (in the Ratings entity) 
+    will be deleted as well. Additionally, a Movie's attributes can be updated here.</p>
+
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display Add Form</a> </p>
+<table border="1" cellpadding="2", id = "movie-table">
+  <tr>
+    <th><a href="#" onClick="newMovie()">Add Movie</a></th>
+    <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>DELETE</th>
+            <th>EDIT</th>
+        </tr>
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[movieID]}}">
+  </tr>
+   {{!-- Body section --}}
+        {{!-- For each row, print the movieID, title, director, year, duration, and language in order --}}
+        
+            <td>{{this.[movieID]}}</td>
+            <td>{{this.[title]}}</td>
+            <td>{{this.[director]}}</td>
+            <td>{{this.[year]}}</td>
+            <td>{{this.[duration]}}</td>
+            <td>{{this.[language]}}</td>
+            <td><button onclick="deleteMovie({{this.[movieID]}})">Delete</button></td>
+            <td><button onClick="updateMovie({{this.[movieID]}})">Edit</button></td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+<script src="./js/delete_movie.js"></script>
+
+</div> 
+<!-- INSERT -->
+<div id="insert">
+    <legend><h2>Add Movie:</h2></legend>
+    <p>This is a form to add a new Movie entry into the database. Neither title nor year can be NULL.</p>
+    <form id="add-movie-form">
+        <fieldset>
+      <label for="input-title">Title: </label>
+      <input type="text" name="input-title" id="input-title">
+      
+      <label for="input-director">Director: </label>
+      <input type="text" name="input-director" id="input-director">
+
+      <label for="input-year">Year: </label>
+      <input type="number" name="input-year" id="input-year">
+
+      <label for="input-duration">Duration: </label>
+      <input type="number" name="input-duration" id="input-duration">
+
+      <label for="input-language">Language: </label>
+      <input type="text" name="input-language" id="input-language">
+  
+          <input class="btn" type="submit" id="addMovie" value="Add Movie" onClick="browseMovieMovie()">
+          <input class="btn" type="button" value="Cancel" onClick="browseMovieMovie()">
+    </fieldset>
+	</form> 
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_movie.js"></script>
+</div>
+<p>&nbsp;</p>
+
+<!-- UPDATE -->
+<div id="update">
+  <legend><strong>Update Movie</strong></legend>
+    <form id="update-movie-form-ajax">
+        
+          <input type="hidden" name="update-movie-id" id="update-movie-id"/>
+
+          <label for="input-update-title">Title: </label>
+          <input type="text" name="input-update-title" id="input-update-title">
+          
+          <label for="input-update-director">Director: </label>
+          <input type="text" name="input-update-director" id="input-update-director">
+
+          <label for="input-update-year">Year:</label>
+          <input type="number" id="input-update-year" name="input-update-year" required>
+
+          <label for="input-update-duration">Duration:</label>
+          <input type="text" id="input-update-duration" name="input-update-duration">
+
+          <label for="input-update-language">Language:</label>
+          <input type="text" id="input-update-language" name="input-update-language">
+
+          <input class="btn" type="submit" id="UpdateSaveMove" value="Update Movie" onClick="browseMovieMovie()">
+          <input class="btn" type="button" value="cancel" onClick="browseMovieMovie()">
+	</form>
+<script src="./js/update_movie.js"></script> 
+</div>
+
+<!--This a form to implement the M:N UPDATE functionality from a Movie to the MoviesGenresTable-->
+<h2>Add a Genre to a Movie:</h2>
+<p> NOTE: This is not yet implemented as it functions are our as an M:N relationship with an external entity.
+    This is a form that matches a Movie with its corresponding Genre in the MoviesGenres Intersection Table. 
+    It allows us to implement the INSERT requirement that adds a corresponding FK attribute in a M:N relationship 
+    (As seen on the Ed Discussion post). Note: A new entry can only be made when a movieID and genreID already 
+    exist within the database.
+</p>
+<form action="#" method="POST">
+    <fieldset>
+        <div>
+            <label for="title">Movie title: Movie</label>
+            <select id="title" name="title" required>
+                <option value="">Select a Movie title</option>
+                <option value="1">Titanic</option>
+                <option value="2">Interstellar</option>
+                <option value="3">Pan's Labyrinth</option>
+                <option value="4">La La Land</option>
+                <option value="5">Spirited Away</option>
+                <option value="6">Fight Club</option>
+                <option value="7">Oppenheimer</option>
+                <option value="8">Avatar</option>
+            </select>
+            <span class="required-text">Required*</span>
+        </div>
+        <div>
+            <label for="genreType">GenreType: Genre</label>
+            <select id="genreType" name="genreType" required>
+                <option value="">Select a Genre</option>
+                <option value="1">Drama</option>
+                <option value="2">Fantasy</option>
+                <option value="3">Sci-Fi</option>
+                <option value="4">Animation</option>
+                <option value="5">Romance</option>
+                <option value="6">Action</option>
+            </select>
+            <span class="required-text">Required*</span>
+        </div>
+    <button type="submit">Add Entry</button>
+</fieldset>
+</form>
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>

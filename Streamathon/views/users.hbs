@@ -1,0 +1,180 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- users.hbs for our Users Entity: Create, Read, Update, and Delete Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions.html">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres.html">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable.html">MoviesGenresTable</a>
+    </nav>
+    <head>
+    <title>Users</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 3 actions here as we do not have a separate "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "insert") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            } else if (dowhat == "update") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("insert").style.display = "none";
+                document.getElementById("update").style.display = "none";
+            }
+        }
+    function newUser() { showform('insert'); }
+    function updateUser(newUserID) { 
+        showform('update');
+        document.getElementById("update-user-id").value = newUserID;
+     }
+    function deleteUser(newUserID){ showform ('delete'); }
+    function browseUserUser() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+
+<body onload="browseUserUser()">
+
+<h2>Users Entity</h2>
+    <p> Within the Users entity, a database administrator can ADD, UPDATE, or DELETE a User. 
+        Updated User attributes only take place within this entity and so no UPDATE CASCADE is 
+        required. When a User is removed from the database, an ON DELETE CASCADE ensures that the 
+        corresponding rating is removed.
+
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display Add Form</a> </p>
+<table border="1" cellpadding="2", id = "user-table">
+  <tr>
+    <th><a href="#" onClick="newUser()">Add User</a></th>
+    <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>DELETE</th>
+            <th>EDIT</th>
+        </tr>
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[userID]}}">
+  </tr>
+   {{!-- Body section --}}
+        {{!-- For each row, print the userID, firstName, lastName, email, and age in order --}}
+        
+            <td>{{this.[userID]}}</td>
+            <td>{{this.[firstName]}}</td>
+            <td>{{this.[lastName]}}</td>
+            <td>{{this.[email]}}</td>
+            <td>{{this.[age]}}</td>
+            <td><button onclick="deleteUser({{this.[userID]}})">Delete</button></td>
+            <td><button onClick="updateUser({{this.[userID]}})">Edit</button></td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+<script src="./js/delete_user.js"></script>
+
+</div> 
+<!-- INSERT User -->
+<div id="insert">
+    <legend><h2>Add User:</h2></legend>
+    <p>This is a form to add a new User entry into the database. A user's firstName, lastName, or email cannot NULL.</p>
+    <form id="add-user-form">
+        <fieldset>
+      <label for="input-firstName">First Name: </label>
+      <input type="text" name="input-firstName" id="input-firstName">
+      
+      <label for="input-lastName">Last Name: </label>
+      <input type="text" name="input-lastName" id="input-lastName">
+
+      <label for="input-email">Email: </label>
+      <input type="text" name="input-email" id="input-email">
+
+      <label for="input-age">Age: </label>
+      <input type="number" name="input-age" id="input-age">
+  
+          <input class="btn" type="submit" id="addUser" value="Add User" onClick="browseUserUser()">
+          <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
+    </fieldset>
+	</form> 
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_user.js"></script>
+</div>
+<p>&nbsp;</p>
+
+<!-- UPDATE User -->
+<div id="update">
+  <legend><strong>Update User</strong></legend>
+    <form id="update-user-form-ajax">
+        
+          <input type="hidden" name="update-user-id" id="update-user-id"/>
+
+          <label for="input-update-firstName">First Name: </label>
+          <input type="text" name="input-update-firstName" id="input-update-firstName">
+
+          <label for="input-update-lastName">Last Name: </label>
+          <input type="text" name="input-update-lastName" id="input-update-lastName">
+
+          <label for="input-update-email">Email: </label>
+          <input type="text" name="input-update-email" id="input-update-email">
+
+          <label for="input-update-age">Age: </label>
+          <input type="number" name="input-update-age" id="input-update-age">
+
+          <input class="btn" type="submit" id="UpdateSaveUser" value="Update User" onClick="browseUserUser()">
+          <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
+	</form>
+<script src="./js/update_user.js"></script> 
+</div>
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>
