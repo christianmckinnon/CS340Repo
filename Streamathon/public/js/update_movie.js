@@ -62,6 +62,8 @@ updateMovieForm.addEventListener("submit", function (e) {
             // Reset required fields
             inputTitle.value = '';
             inputYear.value = '';
+            // Reload the page to dynamically update the table
+            location.reload();
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -88,21 +90,18 @@ function updateRow(data, movieID){
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td of title, director, year, duration, and language
-            let titleTd = updateRowIndex.getElementsByTagName("td")[1];
-            let directorTd = updateRowIndex.getElementsByTagName("td")[2];
-            let yearTd = updateRowIndex.getElementsByTagName("td")[3];
-            let durationTd = updateRowIndex.getElementsByTagName("td")[4];
-            let languageTd = updateRowIndex.getElementsByTagName("td")[5];
+            let titleTd = (document.getElementById("input-update-title").value);
+            let directorTd = (document.getElementById("input-update-director").value);
+            let yearTd = (document.getElementById("input-update-year").value);
+            let durationTd = (document.getElementById("input-update-title").value);
+            let languageTd = (document.getElementById("input-update-language").value);
 
-
-            console.log(parsedData[parsedData.length-1]);
             // Dynamically update the data
-            // Update the innerHTML of the table cells
-            titleTd.innerHTML = parsedData[parsedData.length - 1].title;
-            directorTd.innerHTML = parsedData[parsedData.length - 1].director;
-            yearTd.innerHTML = parsedData[parsedData.length - 1].year;
-            durationTd.innerHTML = parsedData[parsedData.length - 1].duration;
-            languageTd.innerHTML = parsedData[parsedData.length - 1].language;
+            titleTd.innerHTML = (document.getElementById("input-update-title").value);
+            directorTd.innerHTML = (document.getElementById("input-update-director").value);
+            yearTd.innerHTML = (document.getElementById("input-update-year").value);
+            durationTd.innerHTML = (document.getElementById("input-update-title").value);
+            languageTd.innerHTML = (document.getElementById("input-update-language").value);
        }
     }
 }

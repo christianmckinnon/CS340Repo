@@ -26,18 +26,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body>
      <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
     <header>
-        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
         <a href = "index">Home</a>
         <a href = "movies">Movies</a>
         <a href = "users">Users</a>
-        <a href = "subscriptions.html">Subscriptions</a>
-        <a href = "subtiers.html">Subscription Tiers</a>
-        <a href = "genres.html">Genres</a>
+        <a href = "subscriptions">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres">Genres</a>
         <a href = "ratings.html">Ratings</a>
-        <a href = "movgentable.html">MoviesGenresTable</a>
+        <a href = "movgentable">MoviesGenresTable</a>
     </nav>
     <head>
     <title>Movies</title>
@@ -48,7 +48,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             if (dowhat == "all") {
                 document.getElementById("browse").style.display = "block";
                 document.getElementById("insert").style.display = "block";
-                document.getElementById("update").style.display = "none";
+                document.getElementById("update").style.display = "block";
             } else if (dowhat == "insert") {
                 document.getElementById("browse").style.display = "none";
                 document.getElementById("insert").style.display = "block";
@@ -60,13 +60,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             } else {
                 // Otherwise, we simply display options
                 document.getElementById("browse").style.display = "block";
-                document.getElementById("insert").style.display = "none";
+                document.getElementById("insert").style.display = "block";
                 document.getElementById("update").style.display = "none";
             }
         }
     function newMovie() { showform('insert'); }
     function updateMovie(newMovieID) { 
-        showform('update');
+        showform('all');
         document.getElementById("update-movie-id").value = newMovieID;
      }
     function deleteMovie(newMovieID){ showform ('delete'); }
@@ -84,10 +84,9 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
-<p><a href="#" onClick="showAll()">Display Add Form</a> </p>
 <table border="1" cellpadding="2", id = "movie-table">
   <tr>
-    <th><a href="#" onClick="newMovie()">Add Movie</a></th>
+     <th colspan="8" style="text-align: center;">Movies</th>
     <tr>
             {{#each data.[0]}}
             <th>
@@ -151,13 +150,21 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE -->
 <div id="update">
-  <legend><strong>Update Movie</strong></legend>
+  <legend><h2>Update Movie</h2></legend>
+  <p>The below is a form to update a single Movie entry by movieID. The movieID is autopopulated
+     based on which "Edit" button is selected from the table above.</p>
     <form id="update-movie-form-ajax">
         
           <input type="hidden" name="update-movie-id" id="update-movie-id"/>
 
           <label for="input-update-title">Title: </label>
-          <input type="text" name="input-update-title" id="input-update-title">
+          
+          <select name="input-update-title" id="input-update-title">
+            <option value="test">Select a Movie</option>
+            {{#each data}}
+                <option value="{{this.title}}">{{this.title}}</option>
+            {{/each}}
+            </select>
           
           <label for="input-update-director">Director: </label>
           <input type="text" name="input-update-director" id="input-update-director">
@@ -179,7 +186,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!--This a form to implement the M:N UPDATE functionality from a Movie to the MoviesGenresTable-->
 <h2>Add a Genre to a Movie:</h2>
-<p> NOTE: This is not yet implemented as it functions are our as an M:N relationship with an external entity.
+<p> <strong>NOTE: This is not yet implemented as it functions as an M:N relationship with an external entity.</strong>
     This is a form that matches a Movie with its corresponding Genre in the MoviesGenres Intersection Table. 
     It allows us to implement the INSERT requirement that adds a corresponding FK attribute in a M:N relationship 
     (As seen on the Ed Discussion post). Note: A new entry can only be made when a movieID and genreID already 

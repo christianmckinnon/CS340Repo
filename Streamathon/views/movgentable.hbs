@@ -1,0 +1,101 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- movgentable.hbs for our MoviesGenres Intersection Table: Create and Read Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 5 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable">MoviesGenresTable</a>
+    </nav>
+     <head>
+    <title>Movies Genres Table</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 2 actions here as we do not have a separate  "INSERT" or "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+        }
+     }
+    function browseMovGen() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+<body onload="browseMovGen()">
+    <h2>MoviesGenres Intersection Table</h2>
+            <!--The following is our table with example data for the MoviesGenresTable Intersection Table-->
+            <p> This Intersection Table represents the M:N relationship between the Movies and Genres Entities, 
+                entries can be added on the Movies Page. When a Movie is deleted, the corresponding row with the 
+                same movieID and genreID will be removed from this table as well.
+            </p>
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<table border="1" cellpadding="2", id = "movgen-table">
+  <tr>
+    <th colspan="2" style="text-align: center;">Movies Genres Table</th>
+    </tr>
+    <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[movieID]}}">
+
+   {{!-- Body section --}}
+        {{!-- For each row, print the subscriptionID, userID, and price in order --}}
+            <td>{{this.[movieID]}}</td>
+            <td>{{this.[genreID]}}</td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+{{!--<script src="./js/delete_user.js"></script> --}}
+
+</div> 
+
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>

@@ -26,18 +26,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body>
      <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
     <header>
-        <h1>Streamathon: Project Step 3 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
         <a href = "index">Home</a>
         <a href = "movies">Movies</a>
         <a href = "users">Users</a>
-        <a href = "subscriptions.html">Subscriptions</a>
+        <a href = "subscriptions">Subscriptions</a>
         <a href = "subtiers">Subscription Tiers</a>
-        <a href = "genres.html">Genres</a>
+        <a href = "genres">Genres</a>
         <a href = "ratings.html">Ratings</a>
-        <a href = "movgentable.html">MoviesGenresTable</a>
+        <a href = "movgentable">MoviesGenresTable</a>
     </nav>
     <head>
     <title>Users</title>
@@ -48,7 +48,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             if (dowhat == "all") {
                 document.getElementById("browse").style.display = "block";
                 document.getElementById("insert").style.display = "block";
-                document.getElementById("update").style.display = "none";
+                document.getElementById("update").style.display = "block";
             } else if (dowhat == "insert") {
                 document.getElementById("browse").style.display = "none";
                 document.getElementById("insert").style.display = "block";
@@ -60,13 +60,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             } else {
                 // Otherwise, we simply display options
                 document.getElementById("browse").style.display = "block";
-                document.getElementById("insert").style.display = "none";
+                document.getElementById("insert").style.display = "block";
                 document.getElementById("update").style.display = "none";
             }
         }
     function newUser() { showform('insert'); }
     function updateUser(newUserID) { 
-        showform('update');
+        showform('all');
         document.getElementById("update-user-id").value = newUserID;
      }
     function deleteUser(newUserID){ showform ('delete'); }
@@ -85,10 +85,9 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
-<p><a href="#" onClick="showAll()">Display Add Form</a> </p>
 <table border="1" cellpadding="2", id = "user-table">
   <tr>
-    <th><a href="#" onClick="newUser()">Add User</a></th>
+    <th colspan="7" style="text-align: center;">Users</th>
     <tr>
             {{#each data.[0]}}
             <th>
@@ -122,7 +121,9 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <!-- INSERT User -->
 <div id="insert">
     <legend><h2>Add User:</h2></legend>
-    <p>This is a form to add a new User entry into the database. A user's firstName, lastName, or email cannot NULL.</p>
+    <p>This is a form to add a new User entry into the database. A user's firstName, lastName, or email cannot be NULL.
+        When a new User is added to this entity, that same user will also be added to the Subscriptions entity as well.
+    </p>
     <form id="add-user-form">
         <fieldset>
       <label for="input-firstName">First Name: </label>
@@ -148,7 +149,9 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE User -->
 <div id="update">
-  <legend><strong>Update User</strong></legend>
+  <legend><h2>Update User</h2></legend>
+  <p>This is a form to update an existing User in the above database. The userID 
+     is autopopulated based on which "Edit" button is selected from the table above.</p>
     <form id="update-user-form-ajax">
         
           <input type="hidden" name="update-user-id" id="update-user-id"/>

@@ -59,6 +59,8 @@ updateUserForm.addEventListener("submit", function (e) {
             inputFirstName.value = '';
             inputLastName.value = '';
             inputEmail.value = '';
+            // Reload the page to dynamically update the table
+            location.reload();
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -85,17 +87,17 @@ function updateRow(data, userID){
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td of firstName, lastName, email, age, and language
-            let firstNameTd = updateRowIndex.getElementsByTagName("td")[1];
-            let lastNameTd = updateRowIndex.getElementsByTagName("td")[2];
-            let emailTd = updateRowIndex.getElementsByTagName("td")[3];
-            let ageTd = updateRowIndex.getElementsByTagName("td")[4];
+            let firstNameTd = (document.getElementById("input-update-firstName").value);
+            let lastNameTd = (document.getElementById("input-update-lastName").value);
+            let emailTd = (document.getElementById("input-update-email").value);
+            let ageTd = (document.getElementById("input-update-age").value);
 
             // Dynamically update the data
             // Update the innerHTML of the table cells
-            firstNameTd.innerText = parsedData[parsedData.length - 1].firstName;
-            lastNameTd.innerText = parsedData[parsedData.length - 1].lastName;
-            emailTd.innerText = parsedData[parsedData.length - 1].email;
-            ageTd.innerText = parsedData[parsedData.length - 1].age;
+            firstNameTd.innerHTML = (document.getElementById("input-update-firstName").value);
+            lastNameTd.innerHTML = (document.getElementById("input-update-lastName").value);
+            emailTd.innerHTML = (document.getElementById("input-update-email").value);
+            ageTd.innerHTML = (document.getElementById("input-update-age").value);
        }
     }
 }

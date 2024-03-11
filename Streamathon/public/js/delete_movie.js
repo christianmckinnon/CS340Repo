@@ -24,6 +24,7 @@ function deleteMovie(movieID) {
 
             // Add the new data to the table
             deleteRow(movieID);
+            location.reload(); // To ensure the row is deleted dynamically
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 204) {

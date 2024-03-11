@@ -132,6 +132,8 @@ addRowToTable = (data) => {
 
     // Add the row to the table
     currentTable.appendChild(row);
+    // Reload the page to dynamically update the table
+    location.reload();
 
     // COMMENT OUT as we're not using Dropdown currently
 

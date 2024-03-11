@@ -23,6 +23,8 @@ function deleteUser(userID) {
 
             // Add the new data to the table
             deleteRow(userID);
+            // Reload the page to dynamically update the table
+            location.reload();
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 204) {

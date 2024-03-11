@@ -52,8 +52,8 @@ CREATE OR REPLACE TABLE Movies
 CREATE OR REPLACE TABLE Subscriptions
     (subscriptionID INT(11) AUTO_INCREMENT PRIMARY KEY,
     userID INT(11),
-    subTierID INT(11) NOT NULL,
-    subscriptionStatus TINYINT(4) NOT NULL,
+    subTierID INT(11),
+    subscriptionStatus TINYINT(4),
     autoRenew TINYINT(4),
     FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE CASCADE,
     FOREIGN KEY (subTierID) REFERENCES SubscriptionTiers(subTierID));
@@ -185,9 +185,27 @@ VALUES
     (7, 20000),
     (8, 20002);
 
+
+-- Here we set up a trigger to automatically add new User entries to the Subscriptions entity
+-- It adds the new User to Subscriptions with NULL values as that User does not yet have a Subscription
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER insert_subscription_after_new_user
+AFTER INSERT ON Users FOR EACH ROW
+BEGIN
+    INSERT INTO Subscriptions (userID, subTierID, subscriptionStatus, autoRenew)
+    VALUES (NEW.userID, NULL, NULL, NULL);
+END;
+//
+
+DELIMITER ;
+
+
 -- As recommended, we reset foreign key checks to 1 at the end of our script
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
+
+
 
 
 ------------------------------

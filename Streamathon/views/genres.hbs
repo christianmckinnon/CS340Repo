@@ -6,7 +6,7 @@ https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application
 https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
 https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
 
-<!-- subtiers.hbs for our Subscription Tiers Entity: Create, Read, and Update Functionality -->
+<!-- genres.hbs for our Genres Entity: Create, Read, and Update Functionality -->
 
 <!DOCTYPE html>
 <html>
@@ -39,8 +39,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings.html">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
-    <head>
-    <title>Subscription Tiers</title>
+     <head>
+    <title>Genres</title>
     <script language="JavaScript">
 		function showform(dowhat) {
 			// There are only 3 actions here as we do not have a separate "DELETE" form
@@ -64,48 +64,46 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
                 document.getElementById("update").style.display = "none";
             }
         }
-    function newSubTier() { showform('insert'); }
-    function updateSubTier(newSubTierID) { 
+    function newGenre() { showform('insert'); }
+    function updateGenre(newGenreID) { 
         showform('all');
-        document.getElementById("update-subTier-id").value = newSubTierID;
+        document.getElementById("update-genre-id").value = newGenreID;
      }
-    function browseSubTier() { showform ('browse'); }
+    function browseGenre() { showform ('browse'); }
     function showAll() { showform ('all'); }
 </script>
 </head>
+<body onload="browseGenre()">
 
-<body onload="browseSubTier()">
-
-    <h2>Subscriptions Tiers Entity</h2>
-        <p> There are only ADD and UPDATE functionality for this entity as removing a Subscription Tier 
-            is not possible within the Subscriptions entity as subTierID is NOT NULL. New types of 
-            Subscription Tiers can been added  ("Premium Plus," for example) and if something needs to be adjusted, for example, a price increase, 
-            that can be done using the UPDATE form down below. (<strong>Note:</strong> Our subscription prices will always be less than $99.99!) </p>
+    <h2>Genres Entity</h2>
+        <p> This entity, which represents the category each Movie falls into, allows a database  
+                administrator to ADD or UPDATE a Genre. We do not feel that it is appropriate to DELETE an 
+                existing Genre as they can, at any point, be updated to reflect changing trends in 
+                film and streaming.
+            </p>
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
-<table border="1" cellpadding="2", id = "subTier-table">
+<table border="1" cellpadding="2", id = "genre-table">
   <tr>
-    <th colspan="4" style="text-align: center;">Subscription Tiers</th>
+    <th colspan="3" style="text-align: center;">Genres</th>
+    </tr>
     <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>EDIT</th>
-        </tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th>EDIT</th>
   </tr>
   {{#each data}}
-  <tr data-value = "{{this.[subTierID]}}">
-  </tr>
+  <tr data-value = "{{this.[genreID]}}">
+
    {{!-- Body section --}}
-        {{!-- For each row, print the subTierID, subscriptionType, and price in order --}}
-        
-            <td>{{this.[subTierID]}}</td>
-            <td>{{this.[subscriptionType]}}</td>
-            <td>{{this.[price]}}</td>
-            <td><button class="updateSubTierButton" onClick="updateSubTier({{this.[subTierID]}})">Edit</button></td>
+        {{!-- For each row, print the genreID, genreType, and price in order --}}
+            <td>{{this.[genreID]}}</td>
+            <td>{{this.[genreType]}}</td>
+            <td><button class="updateGenreButton" onClick="updateGenre({{this.[genreID]}})">Edit</button></td>
         </tr>
         {{/each}}
 </table>
@@ -113,55 +111,42 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 {{!--<script src="./js/delete_user.js"></script> --}}
 
 </div> 
-<!-- INSERT Subscription Tier -->
+<!-- INSERT Genre -->
 <div id="insert">
-    <legend><h2>Add Subscription Tier:</h2></legend>
-    <p> Here we can add a new SubscriptionTier, for example, if we wanted to add a "Premium Plus" plan, we 
-        could do so using the below attributes. (Nothing here can be NULL).</p>
-    <form id="add-subTier-form">
+    <legend><h2>Add Genre:</h2></legend>
+    <p> A form to add a new Genre to the database. (Nothing here can be NULL)</p> 
+    <form id="add-genre-form">
         <fieldset>
-      <label for="input-subscriptionType">Subscription Type: </label>
-      <input type="text" name="input-subscriptionType" id="input-subscriptionType">
+      <label for="input-genreType">Genre Type: </label>
+      <input type="text" name="input-genreType" id="input-genreType">
       
-      <label for="input-price">Price: </label>
-      <input type="text" name="input-price" id="input-price">
-  
-          <input class="btn" type="submit" id="addSubTier" value="Add Subscription Tier" onClick="browseSubTier()">
-          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
+          <input class="btn" type="submit" id="addGenre" value="Add Genre" onClick="browseGenre()">
+          <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
     </fieldset>
 	</form> 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_subtier.js"></script>
+<script src="./js/add_genre.js"></script>
 </div>
 <p>&nbsp;</p>
 
-<!-- UPDATE Subscription Tier -->
+<!-- UPDATE Genre -->
 <div id="update">
-  <legend><h2>Update Subscription Tier</h2></legend>
-  <p> This is a form that allows us to update a SubscriptionTier. The subTierID is autopopulated
-      based on which "Edit" button is selected from the table above. </p>
-    <form id="update-subTier-form-ajax">
+  <legend><h2>Update Genre</h2></legend>
+  <p> A form to update an existing Genre in the database. Sometimes a genre can "change" or blend with others 
+    over time and so a user can make those changes with this form. The genreID is autopopulated
+    based on which "Edit" button is selected from the table above.</p>
+    <form id="update-genre-form-ajax">
         
-          <input type="hidden" name="update-subTier-id" id="update-subTier-id"/>
+          <input type="hidden" name="update-genre-id" id="update-genre-id"/>
 
-          <label for="input-update-subscriptionType">Subscription Type: </label>
+          <label for="input-update-genreType">Genre Type: </label>
+          <input type="text" name="input-update-genreType" id="input-update-genreType">
           
-          <select name="input-update-subscriptionType" id="input-update-subscriptionType">
-            <option value="test">Select a Sub Type</option>
-            {{#each data}}
-                <option value="{{this.subscriptionType}}">{{this.subscriptionType}}</option>
-            {{/each}}
-            </select>
-        
-          <label for="input-update-price">Price: </label>
-         
-          <input type="text" name="input-update-price" id="input-update-price" value = "{{this.price}}"> 
-           
-          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update Subscription Tier" onClick="browseSubTier()">
-          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
+          <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre" onClick="browseGenre()">
+          <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
           
 	</form>
-<script src="./js/update_subtier.js"></script> 
+<script src="./js/update_genre.js"></script> 
 </div>
 <!-- Copyright of our team as footer -->
 <footer>

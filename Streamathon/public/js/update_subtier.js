@@ -3,7 +3,7 @@
 // Citation: Code adapted from OSU 340 Github Step 8: Dynamically Updating Data
 // https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%208%20-%20Dynamically%20Updating%20Data
 
-// This is our udpate_subtier.js form to implement updating Subscription Tier entries in our database
+// This is our update_subtier.js form to implement updating Subscription Tier entries in our database
 
 // Get the objects we need to modify for the Subscription Tiers entity
 let updateSubTierForm = document.getElementById("update-subTier-form-ajax");
@@ -24,6 +24,12 @@ updateSubTierForm.addEventListener("submit", function (e) {
     let subscriptionTypeValue = inputSubscriptionType.value;
     let priceValue = inputPrice.value;
 
+    // Put our data we want to send in a javascript object
+    let data = {
+        subTierID: subTierIDValue,
+        subscriptionType: subscriptionTypeValue,
+        price: parseFloat(priceValue),
+    }
 
     // No NULL values for subscriptionType or email
     if (subscriptionTypeValue == "" || priceValue == "") 
@@ -31,13 +37,7 @@ updateSubTierForm.addEventListener("submit", function (e) {
         return;
     }
 
-    // Put our data we want to send in a javascript object
-    let data = {
-        subTierID: subTierIDValue,
-        subscriptionType: subscriptionTypeValue,
-        price: priceValue,
-    }
-
+    console.log(data.price);
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-subTier-ajax", true);
@@ -50,9 +50,11 @@ updateSubTierForm.addEventListener("submit", function (e) {
             // Add the new data to the table using subTierIDValue
             updateRow(xhttp.response, subTierIDValue);
 
-            // Reset required fields
+            //Reset required fields
             inputSubscriptionType.value = '';
             inputPrice.value = '';
+            // Reload the page to dynamically update the table
+            location.reload();
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -61,31 +63,37 @@ updateSubTierForm.addEventListener("submit", function (e) {
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-
 })
 
+
 // This function places the newly updated values back into the SubscriptionTiers table
-function updateRow(data, subTierID){
-    let parsedData = JSON.parse(data);    
-    let table = document.getElementById("subTier-table");
-    console.log(parsedData);
+    function updateRow(data, subTierID){
+        let parsedData = JSON.parse(data);    
+        let table = document.getElementById("subTier-table");
+        console.log(parsedData);
 
-    for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == subTierID) {
+        console.log((document.getElementById("input-update-price").value));
 
-            // Get the location of the row where we found the matching person ID
-            let updateRowIndex = table.getElementsByTagName("tr")[i];
+        for (let i = 0, row; row = table.rows[i]; i++) {
+        //iterate through rows
+        //rows would be accessed using the "row" variable assigned in the for loop
+        if (table.rows[i].getAttribute("data-value") == subTierID) {
 
-            // Get td of subscriptionType, price, email, age, and language
-            let subscriptionTypeTd = updateRowIndex.getElementsByTagName("td")[1];
-            let priceTd = updateRowIndex.getElementsByTagName("td")[2];
+                // Get the location of the row where we found the matching person ID
+                let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Dynamically update the data
-            // Update the innerHTML of the table cells
-            subscriptionTypeTd.innerText = parsedData[parsedData.length - 1].subscriptionType;
-            priceTd.innerText = parsedData[parsedData.length - 1].price;
-       }
-    }
+                // Get td of subscriptionType, price, email, age, and language
+                let subscriptionTypeTd = (document.getElementById("input-update-subscriptionType").value);
+                let priceTd = (document.getElementById("input-update-price").value);
+                console.log(subscriptionTypeTd);
+                console.log(priceTd);
+
+                // Dynamically update the data
+                // Update the innerHTML of the table cells
+                subscriptionTypeTd.innerHTML = (document.getElementById("input-update-subscriptionType").value);
+                priceTd.innerHTML = (document.getElementById("input-update-price").value);
+        }
+     }
 }
+
+

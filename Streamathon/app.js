@@ -35,6 +35,7 @@ var db = require('./database/db-connector')
 /*
     ROUTES
 */
+
 // ORIGINAL APP ROUTE TO INDEX
 app.get('/index', function(req, res) {
     res.render('index');
@@ -42,20 +43,211 @@ app.get('/index', function(req, res) {
 
 // SELECT for Index
 app.get('/', function(req, res)
-    {  
-        let query1 = "SELECT * FROM Movies;";               // Define our query
+    {
+        // Define our query
+        let query1 = `SELECT * FROM Movies;`;   
+ 
 
         db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
             res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
         })                                                      // an object where 'data' is equal to the 'rows' we
     });
+
+// Routes for the MoviesGenres Intersection Table
+// Routes Section: SELECT MoviesGenres
+app.get('/movgentable', function(req, res)
+{  
+     // Define our query
+    let query1 = `SELECT * FROM MoviesGenresTable;`
+    
+    
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+        res.render('movgentable', {data: rows});               // Render the movgentable.hbs file, and also send the renderer
+    })                                                      // an object where 'data' is equal to the 'rows' we
+});
+
+// ROUTES Subscriptions Entity
+// Routes Section: SELECT Subscription
+app.get('/subscriptions', function(req, res) {  
+    // This query is from our DML and is used to make our user-facing Subscriptions Entity more user-friendly
+    // by presenting userID as userName, and subtierID as subscriptionType
+    let query1 = 
+        `SELECT
+            subs.subscriptionID,
+            CONCAT(usr.firstName, ' ', usr.lastName) AS userName,
+            tier.subscriptionType AS subscriptionType,
+            IF(subs.subscriptionStatus = 1, 'Active', 'Inactive') AS subscriptionStatus,
+            IF(subs.autoRenew = 1, 'Yes', 'No') AS autoRenew
+        FROM
+            Users usr
+        LEFT JOIN
+            Subscriptions subs ON usr.userID = subs.userID
+        LEFT JOIN
+            SubscriptionTiers tier ON subs.subTierID = tier.subTierID
+        ORDER BY
+            subs.subscriptionID;`;
+
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); // Internal Server Error
+        } else {
+            res.render('subscriptions', { data: rows });
+        }
+    });
+});
+
+
+// Routes Section: UPDATE Subscriptions
+app.put('/put-subscription-ajax', function(req,res,next){
+    let data = req.body;
+  
+    // Ensure subTierID is parsed to an integer
+    let subscriptionID = data.subscriptionID;
+    let userName = data.userName;
+    let subscriptionType = data.subscriptionType;
+    let subscriptionStatus = data.subscriptionStatus;
+    let autoRenew = data.autoRenew;
+
+    // Construct the SQL update query: This query SELECTs userID from Users as the actual username and the subTier
+    // from SubscriptionTiers as the actual subtier
+    let queryUpdateSubscription = `UPDATE Subscriptions 
+                                        SET userID = (SELECT userID FROM Users WHERE CONCAT(firstName, ' ', lastName) = ?),
+                                        subTierID = (SELECT subTierID FROM SubscriptionTiers WHERE subscriptionType = ?),
+                                        subscriptionStatus = ?,
+                                        autoRenew = ?
+                                        WHERE subscriptionID = ?`;
+
+
+    let selectSubscription = `SELECT * FROM Subscriptions WHERE subscriptionID = ?`;
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateSubscription, [userName, subscriptionType, subscriptionStatus, autoRenew, subscriptionID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectSubscription, [subscriptionID], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
+
+
+
+
+// ROUTES Genres Entity
+// Routes Section: SELECT Genre
+app.get('/genres', function(req, res)
+    {  
+        let query1 = `SELECT * FROM Genres;`;               // Define our query
+
+        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+            res.render('genres', {data: rows});               // Render the genres.hbs file, and also send the renderer
+        })                                                      // an object where 'data' is equal to the 'rows' we
+    });
+
+// ROUTES Section: ADD Genre
+app.post('/add-genre-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Genres (genreType)
+    VALUES ('${data.genreType}');`
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, perform a SELECT * on Movies
+            query2 = `SELECT * FROM Genres;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+// Routes Section: UPDATE Genre
+app.put('/put-genre-ajax', function(req,res,next){
+    let data = req.body;
+  
+    // Ensure subTierID is parsed to an integer
+    let genreID = parseInt(data.genreID);
+    let genreType = data.genreType;
+
+    // Construct the SQL update query
+    let queryUpdateGenre = `UPDATE Genres SET genreType = ? WHERE genreID = ?`;
+    let selectGenre = `SELECT * FROM Genres WHERE genreID = ?`;
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateGenre, [genreType, genreID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectGenre, [genreID], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
     
 // ROUTES Subscription Tiers Entity
 // Routes Section: SELECT USER
 app.get('/subtiers', function(req, res)
     {  
-        let query1 = "SELECT * FROM SubscriptionTiers;";               // Define our query
+        let query1 = `SELECT * FROM SubscriptionTiers;`;               // Define our query
 
         db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
@@ -109,11 +301,11 @@ app.put('/put-subTier-ajax', function(req,res,next){
     // Ensure subTierID is parsed to an integer
     let subTierID = parseInt(data.subTierID);
     let subscriptionType = data.subscriptionType;
-    let price = parseInt(data.price);
+    let price = parseFloat(data.price);
 
     // Construct the SQL update query
     let queryUpdateUser = `UPDATE SubscriptionTiers SET subscriptionType = ?, price = ? WHERE subTierID = ?`;
-    let selectSubTier = `SELECT * FROM SubscriptionTiers`;
+    let selectSubTier = `SELECT * FROM SubscriptionTiers WHERE subTierID = ?`;
   
           // Run the 1st query
           db.pool.query(queryUpdateUser, [subscriptionType, price, subTierID], function(error, rows, fields){
@@ -145,7 +337,7 @@ app.put('/put-subTier-ajax', function(req,res,next){
 // Routes Section: SELECT USER
 app.get('/users', function(req, res)
     {  
-        let query1 = "SELECT * FROM Users;";               // Define our query
+        let query1 = `SELECT * FROM Users;`;               // Define our query
 
         db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
@@ -267,7 +459,7 @@ app.put('/put-user-ajax', function(req,res,next){
 // Routes Section: SELECT MOVIE
 app.get('/movies', function(req, res)
     {  
-        let query1 = "SELECT * FROM Movies;";               // Define our query
+        let query1 = `SELECT * FROM Movies;`;               // Define our query
 
         db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
@@ -406,6 +598,7 @@ app.put('/put-movie-ajax', function(req,res,next){
                       }
                   })
               }
+
   })});
 
 /*

@@ -1,0 +1,159 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- subscriptions.hbs for our Subscriptions Entity: Create, Read, and Update Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres">Genres</a>
+        <a href = "ratings.html">Ratings</a>
+        <a href = "movgentable">MoviesGenresTable</a>
+    </nav>
+     <head>
+    <title>Subscriptions</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 2 actions here as we do not have a separate  "INSERT" or "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("update").style.display = "block";
+            } else if (dowhat == "update") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("update").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            }
+        }
+    //function newSubscription() { showform('insert'); }
+    function updateSubscription(newSubscriptionID) { 
+        showform('all');
+        document.getElementById("update-subscription-id").value = newSubscriptionID;
+     }
+    function browseSubscription() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+<body onload="browseSubscription()">
+
+    <h2>Subscriptions Entity</h2>
+        <p> Within this entity a database administrator can UPDATE existing Subscription entries. There is no 
+                DELETE functionality within this page as a Subscription can ONLY be deleted if a User is deleted. 
+                This is implemented through the ON-DELETE CASCADE functionality. A User must already exist within the 
+                Users entity before they can be connected to a Subscription. Once they have been added, they will appear
+                with a NULL value for subTierID, Inactive for subscriptionStatus and No for autorenew. (via subscriptionID). <br>
+                <strong>Process to INSERT a Subscription for New Users: Add a New User in Users, then update their Subscription here.</strong>
+            </p>
+
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<table border="1" cellpadding="2", id = "subscription-table">
+  <tr>
+    <th colspan="6" style="text-align: center;">Subscriptions</th>
+    </tr>
+    <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th>EDIT</th>
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[subscriptionID]}}">
+
+   {{!-- Body section --}}
+        {{!-- For each row, print the subscriptionID, userID, and price in order --}}
+            <td>{{this.[subscriptionID]}}</td>
+            <td>{{this.[userName]}}</td>
+            <td>{{this.[subscriptionType]}}</td>
+            <td>{{this.[subscriptionStatus]}}</td>
+            <td>{{this.[autoRenew]}}</td>
+            <td><button class="updateSubscriptionButton" onClick="updateSubscription({{this.[subscriptionID]}})">Edit</button></td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+{{!--<script src="./js/delete_user.js"></script> --}}
+
+</div> 
+
+<!-- UPDATE Subscription Tier -->
+<div id="update">
+  <legend><h2>Update Subscription</h2></legend>
+  <p> <strong>To update subscriptionStatus please input 1 = Active, 
+        0 = Inactive and for autoRenew, 1 = Yes, 0 = No.
+      </strong> <br>This is a form that allows us to update a SubscriptionTier. The subTierID is autopopulated
+      based on which "Edit" button is selected from the table above.  </p>
+    <form id="update-subscription-form-ajax">
+        
+          <input type="hidden" name="update-subscription-id" id="update-subscription-id"/>
+
+          <label for="input-update-userID">Username (userID): </label>
+      <select name="input-update-userID" id="input-update-userID">
+            <option value="test">Select a Username</option>
+            {{#each data}}
+                <option value="{{this.userName}}">{{this.userName}}</option>
+            {{/each}}
+            </select>
+
+      <label for="input-update-subTierID">Subscription Tier ID: </label>
+      <select name="input-update-subTierID" id="input-update-subTierID">
+            <option value="test">Select a Sub Type</option>
+            {{#each data}}
+                <option value="{{this.subscriptionType}}">{{this.subscriptionType}}</option>
+            {{/each}}
+            </select>
+
+      <label for="input-update-subscription-status">Subscription Status: </label>
+      <input type="text" name="input-update-subscription-status" id="input-update-subscription-status">
+
+      <label for="input-update-auto-renew">Auto Renew: </label>
+      <input type="text" name="input-update-auto-renew" id="input-update-auto-renew">
+
+        <input class="btn" type="submit" id="UpdateSaveSubscription" value="Update Subscription" onClick="browseSubscription()">
+        <input class="btn" type="button" value="Cancel" onClick="browseSubscription()">
+          
+	</form>
+<script src="./js/update_subscription.js"></script> 
+</div>
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>
