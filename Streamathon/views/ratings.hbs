@@ -1,0 +1,190 @@
+<!--Hanjun Kim and Christian McKinnon, CS340 
+Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
+
+Citations:
+https://canvas.oregonstate.edu/courses/1946034/pages/exploration-web-application-technology?module_item_id=23809327
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data -->
+
+<!-- ratings.hbs for our Ratings Entity: Create, Read, and Update Functionality -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CS 340: Project Step 3</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive, nofollow" />
+    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
+    <!--<script src='main.js'></script>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!--<link rel="manifest" href="site.webmanifest">-->
+</head>
+<body>
+     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+    <header>
+        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+    </header>
+    <!--A navigation bar with 7 Entities and 1 Homepage-->
+    <nav>
+        <a href = "index">Home</a>
+        <a href = "movies">Movies</a>
+        <a href = "users">Users</a>
+        <a href = "subscriptions">Subscriptions</a>
+        <a href = "subtiers">Subscription Tiers</a>
+        <a href = "genres">Genres</a>
+        <a href = "ratings">Ratings</a>
+        <a href = "movgentable">MoviesGenresTable</a>
+    </nav>
+     <head>
+    <title>Ratings</title>
+    <script language="JavaScript">
+		function showform(dowhat) {
+			// There are only 2 actions here as we do not have a separate  "INSERT" or "DELETE" form
+            // We don't show UPDATE on the main page
+            if (dowhat == "all") {
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("update").style.display = "block";
+            } else if (dowhat == "update") {
+                document.getElementById("browse").style.display = "none";
+                document.getElementById("update").style.display = "block";
+            } else {
+                // Otherwise, we simply display options
+                document.getElementById("browse").style.display = "block";
+                document.getElementById("update").style.display = "none";
+            }
+        }
+    //function newSubscription() { showform('insert'); }
+    function updateRating(newRatingID, userNameValue, movieTitleValue) { 
+        showform('all');
+        document.getElementById("update-rating-id").value = newRatingID;
+        document.getElementById("input-update-userID").value = userNameValue;
+        document.getElementById("input-update-movieID").value = movieTitleValue;
+     }
+    function deleteRating(newRatingID){ showform ('delete'); }
+    function browseRating() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+</head>
+<body onload="browseRating()">
+
+    <h2>Ratings Entity</h2>
+        <p> Within this entity, which represents the ratings Users assign to a Movie, a database administrator 
+                can ADD, UPDATE, and DELETE a Rating. Adding a Rating requires a corresponding userID and movieID, while 
+                updating one requires only the PK, the ratingID. When a Rating is deleted, it has no effect on its FKs, 
+                Users or Movies. Note: a User cannot create duplicate entries of a Rating with the same movieID. This constraint 
+                is in place to prevent abusing our rating system with inflated ratings. </p>
+
+<!-- BROWSE / DELETE -->
+<div id="browse">
+<table border="1" cellpadding="2", id = "ratings-table">
+  <tr>
+    <th colspan="7" style="text-align: center;">Ratings</th>
+    </tr>
+    <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th>DELETE</th>
+        <th>EDIT</th>
+  </tr>
+  {{#each data}}
+  <tr data-value = "{{this.[ratingID]}}">
+
+   {{!-- Body section --}}
+        {{!-- For each row, print the ratingID, userID, and price in order --}}
+            <td>{{this.[ratingID]}}</td>
+            <td>{{this.[userName]}}</td>
+            <td>{{this.[movieTitle]}}</td>
+            <td>{{this.[userRating]}}</td>
+            <td>{{this.[ratingDate]}}</td>
+            <td><button onclick="deleteRating({{this.[ratingID]}})">Delete</button></td>
+            <td><button class="updateRatingButton" onClick="updateRating('{{this.[ratingID]}}', '{{this.[userName]}}', '{{this.[movieTitle]}}')">Edit</button></td>
+        </tr>
+        {{/each}}
+</table>
+<p>&nbsp;</p>
+<script src="./js/delete_rating.js"></script>
+</div> 
+
+<!-- INSERT Rating -->
+<div id="insert">
+    <legend><h2>Add Rating:</h2></legend>
+    <p> The below form is used to add a new Rating to the database (remember, a User can always update their  
+        userRating, but they cannot create a duplicate rating with the same movieID).
+    </p>
+    <form id="add-rating-form">
+        <fieldset>
+      <label for="input-userID">User: </label>
+      <select name="input-userID" id="input-userID">
+            <option value="test">Select a userName</option>
+            {{#each users}}
+                <option value="{{this.fullName}}">{{this.fullName}}</option>
+            {{/each}}
+            </select>
+      
+      <label for="input-title">Movie Title: </label>
+      <select name="input-title" id="input-title">
+            <option value="test">Select a Movie</option>
+            {{#each movies}}
+                <option value="{{this.title}}">{{this.title}}</option>
+            {{/each}}
+            </select>
+
+      <label for="input-rating">Rating: </label>
+      <input type="number" name="input-rating" id="input-rating">
+
+      <label for="input-date">Date: </label>
+      <input type="date" name="input-date" id="input-date">
+
+          <input class="btn" type="submit" id="addRating" value="Add Rating" onClick="browseRating()">
+          <input class="btn" type="button" value="Cancel" onClick="browseRating()">
+    </fieldset>
+	</form> 
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_rating.js"></script>
+</div>
+<p>&nbsp;</p>
+
+<!-- UPDATE Rating-->
+<div id="update">
+  <legend><h2>Update a Rating</h2></legend>
+        <p> The below form is used to update an existing Rating in the database. The ratingID is autopopulated
+            based on which "Edit" button is selected from the table above.</p>
+    <form id="update-rating-form-ajax">
+        
+        <input type="hidden" name="update-rating-id" id="update-rating-id"/>  
+
+        <label for="input-update-userID">UserName (userID): </label>
+        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" readonly="readonly" disabled>
+      
+
+        <label for="input-update-movieID">Movie (movieID): </label>
+        <input type="text" class="hidden" name="input-update-movieID" id="input-update-movieID" readonly="readonly" disabled>
+      
+
+        <label for="input-update-user-rating">User Rating: </label>
+        <input type="text" name="input-update-user-rating" id="input-update-user-rating">
+
+        <label for="input-update-rating-date">Rating Date: </label>
+        <input type="date" name="input-update-rating-date" id="input-update-rating-date">
+
+        <input class="btn" type="submit" id="UpdateSaveRating" value="Update Rating" onClick="browseRating()">
+        <input class="btn" type="button" value="Cancel" onClick="browseRating()">
+          
+	</form>
+<script src="./js/update_rating.js"></script> 
+</div>
+<!-- Copyright of our team as footer -->
+<footer>
+    <p>
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+    </p>
+</footer>
+</body>
+</html>

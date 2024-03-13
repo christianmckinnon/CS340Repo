@@ -36,31 +36,146 @@ var db = require('./database/db-connector')
     ROUTES
 */
 
+/* SQL QUERIES */
+show_ratings_table = `
+    SELECT rat.ratingID, CONCAT(usr.firstName, ' ', usr.lastName) AS userName, mov.title AS movieTitle, 
+           rat.userRating AS userRating, rat.ratingDate AS ratingDate FROM Ratings rat
+        INNER JOIN Users usr ON rat.userID = usr.userID
+        INNER JOIN Movies mov ON rat.movieID = mov.movieID
+    GROUP BY rat.ratingID;
+`;
+
 // ORIGINAL APP ROUTE TO INDEX
 app.get('/index', function(req, res) {
     res.render('index');
 });
 
 // SELECT for Index
-app.get('/', function(req, res)
-    {
-        // Define our query
-        let query1 = `SELECT * FROM Movies;`;   
- 
+app.get('/', function(req, res) {
+    res.render('index'); // Render the homepage
+});
 
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+// Routes for the Ratings Table
+// Routes Section: SELECT Ratings
+app.get('/ratings', function(req, res)
+{  
+    let ratings_query = show_ratings_table;
+    let get_users = "SELECT userID, CONCAT(firstName, ' ', lastName) AS fullName FROM Users;";
+    let get_movies ="SELECT movieID, title FROM Movies;";
 
-            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        })                                                      // an object where 'data' is equal to the 'rows' we
+    // Run the main query
+    db.pool.query(ratings_query, function(error, rows, fields){
+        let ratings = rows;
+        
+        // Run the second query for a dropdown
+        db.pool.query(get_users, (error, rows, fields) => {
+            let users = rows;
+
+            // Run the second query for a dropdown
+            db.pool.query(get_movies, (error, rows, fields) => {
+                let movies = rows;
+                
+                return res.render('ratings', {data: ratings, users: users, movies: movies});
+        })
+    })
+})
+});
+
+// ROUTES section ADD RATING
+app.post('/add-rating-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Ratings (userID, movieID, userRating, ratingDate)
+    SELECT
+        (SELECT userID FROM Users WHERE CONCAT(firstName, ' ', lastName) = '${data.userID}') AS userInput,
+        (SELECT movieID FROM Movies WHERE title = '${data.movieID}') AS movieInput, '${data.userRating}', '${data.ratingDate}';`
+    
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.status(400).send(error);
+        }
+        else
+        {
+            res.sendStatus(204);
+        }
+    })
+});
+
+// DELETE RATING
+app.delete('/delete-rating-ajax/', function(req,res,next){
+    let data = req.body;
+    let ratingID = parseInt(data.ratingID);
+    let deleteRating = `DELETE FROM Ratings WHERE ratingID=?;`;
+
+    // Run the 1st query
+    db.pool.query(deleteRating, [ratingID], function(error, rows, fields){
+        if (error) {
+
+        // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+        console.log(error);
+        res.sendStatus(400);
+        }
+        else {res.sendStatus(204);}
+        })
     });
+
+// UPDATE RATING
+app.put('/put-rating-ajax', function(req,res,next){
+    let data = req.body;
+
+    // Ensure movieID is parsed to an integer
+    let ratingID = parseInt(data.ratingID);
+    let userRating = parseInt(data.userRating);
+    let ratingDate = data.ratingDate;
+
+    // Construct the SQL update query
+    let queryUpdateRating = `UPDATE Ratings SET userRating = ?, ratingDate = ? WHERE ratingID = ?;`;
+    let selectRating = `SELECT * FROM Ratings;`;
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateRating, [userRating, ratingDate, ratingID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can update data on the frontend
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectRating, [ratingID], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
 
 // Routes for the MoviesGenres Intersection Table
 // Routes Section: SELECT MoviesGenres
 app.get('/movgentable', function(req, res)
 {  
      // Define our query
-    let query1 = `SELECT * FROM MoviesGenresTable;`
-    
+    let query1 = 
+    `SELECT 
+        mov.title AS movieTitle, gen.genreType AS movieGenre FROM Movies mov
+        INNER JOIN MoviesGenresTable MGT ON mov.movieID = MGT.movieID
+        INNER JOIN Genres gen ON MGT.genreID = gen.genreID
+        GROUP BY movieTitle;`;
     
     db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
@@ -148,10 +263,6 @@ app.put('/put-subscription-ajax', function(req,res,next){
                   })
               }
   })});
-
-
-
-
 
 // ROUTES Genres Entity
 // Routes Section: SELECT Genre
