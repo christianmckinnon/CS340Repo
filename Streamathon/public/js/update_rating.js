@@ -60,7 +60,6 @@ updateRatingForm.addEventListener("submit", function (e) {
             inputUserRating.value = '';
             inputRatingDate.value = '';
             location.reload();
-
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -71,8 +70,6 @@ updateRatingForm.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(data));
 
 })
-
-
 
 function updateRow(data, ratingID){
     let parsedData = JSON.parse(data);

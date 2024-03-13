@@ -65,9 +65,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             }
         }
     function newSubTier() { showform('insert'); }
-    function updateSubTier(newSubTierID) { 
+    function updateSubTier(newSubTierID, newSubType, newPrice) { 
         showform('all');
         document.getElementById("update-subTier-id").value = newSubTierID;
+        document.getElementById("input-update-subscriptionType").value = newSubType;
+        document.getElementById("input-update-price").value = newPrice;
      }
     function browseSubTier() { showform ('browse'); }
     function showAll() { showform ('all'); }
@@ -77,10 +79,33 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body onload="browseSubTier()">
 
     <h2>Subscriptions Tiers Entity</h2>
-        <p> There are only ADD and UPDATE functionality for this entity as removing a Subscription Tier 
-            is not possible within the Subscriptions entity as subTierID is NOT NULL. New types of 
-            Subscription Tiers can been added  ("Premium Plus," for example) and if something needs to be adjusted, for example, a price increase, 
-            that can be done using the UPDATE form down below. (<strong>Note:</strong> Our subscription prices will always be less than $99.99!) </p>
+        <p> The Subscription Tiers Entity features ADD and UPDATE functionality.
+            New types of Subscription Tiers can been added  ("Premium Plus," for example) and 
+            if the name of the subscriptionType needs to be modified or the price adjusted, that can be done using the 
+            UPDATE form down below. (<strong>Note:</strong> Our subscription prices will always be less than $99.99!) </p>
+
+<!-- UPDATE Subscription Tier -->
+<div id="update">
+  <legend><h2>Update Subscription Tier</h2></legend>
+  <p> This is a form that allows us to update a SubscriptionTier. The data will be autopopulated
+      based on which "Edit" button is selected from the table above. </p>
+    <form id="update-subTier-form-ajax">
+        
+          <input type="hidden" name="update-subTier-id" id="update-subTier-id"/>
+
+          <label for="input-update-subscriptionType">Subscription Type: </label>
+          <input type="text" name="input-update-subscriptionType" id="input-update-subscriptionType" required> 
+        
+          <label for="input-update-price">Price: </label>
+          <input type="text" name="input-update-price" id="input-update-price" required> 
+           
+          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update Subscription Tier" onClick="browseSubTier()">
+          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
+          
+	</form>
+    <p></p>
+<script src="./js/update_subtier.js"></script> 
+</div>
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
@@ -105,11 +130,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[subTierID]}}</td>
             <td>{{this.[subscriptionType]}}</td>
             <td>{{this.[price]}}</td>
-            <td><button class="updateSubTierButton" onClick="updateSubTier({{this.[subTierID]}})">Edit</button></td>
+            <td><button class="updateSubTierButton" onClick="updateSubTier('{{this.[subTierID]}}', '{{this.[subscriptionType]}}',
+                                                                            '{{this.[price]}}')">Edit</button></td>
         </tr>
         {{/each}}
 </table>
-<p>&nbsp;</p>
+<p></p>
 {{!--<script src="./js/delete_user.js"></script> --}}
 
 </div> 
@@ -133,36 +159,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_subtier.js"></script>
 </div>
-<p>&nbsp;</p>
+<p><br><br><br><br><br></p>
 
-<!-- UPDATE Subscription Tier -->
-<div id="update">
-  <legend><h2>Update Subscription Tier</h2></legend>
-  <p> This is a form that allows us to update a SubscriptionTier. The subTierID is autopopulated
-      based on which "Edit" button is selected from the table above. </p>
-    <form id="update-subTier-form-ajax">
-        
-          <input type="hidden" name="update-subTier-id" id="update-subTier-id"/>
-
-          <label for="input-update-subscriptionType">Subscription Type: </label>
-          
-          <select name="input-update-subscriptionType" id="input-update-subscriptionType">
-            <option value="test">Select a Sub Type</option>
-            {{#each data}}
-                <option value="{{this.subscriptionType}}">{{this.subscriptionType}}</option>
-            {{/each}}
-            </select>
-        
-          <label for="input-update-price">Price: </label>
-         
-          <input type="text" name="input-update-price" id="input-update-price" value = "{{this.price}}"> 
-           
-          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update Subscription Tier" onClick="browseSubTier()">
-          <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
-          
-	</form>
-<script src="./js/update_subtier.js"></script> 
-</div>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>

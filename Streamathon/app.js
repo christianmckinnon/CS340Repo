@@ -45,6 +45,9 @@ show_ratings_table = `
     GROUP BY rat.ratingID;
 `;
 
+user_dropdown = "SELECT userID, CONCAT(firstName, ' ', lastName) AS fullName FROM Users;";
+movie_dropdown = "SELECT movieID, title FROM Movies;";
+
 // ORIGINAL APP ROUTE TO INDEX
 app.get('/index', function(req, res) {
     res.render('index');
@@ -60,8 +63,8 @@ app.get('/', function(req, res) {
 app.get('/ratings', function(req, res)
 {  
     let ratings_query = show_ratings_table;
-    let get_users = "SELECT userID, CONCAT(firstName, ' ', lastName) AS fullName FROM Users;";
-    let get_movies ="SELECT movieID, title FROM Movies;";
+    let get_users = user_dropdown;
+    let get_movies = movie_dropdown;
 
     // Run the main query
     db.pool.query(ratings_query, function(error, rows, fields){
@@ -186,10 +189,8 @@ app.get('/movgentable', function(req, res)
 // ROUTES Subscriptions Entity
 // Routes Section: SELECT Subscription
 app.get('/subscriptions', function(req, res) {  
-    // This query is from our DML and is used to make our user-facing Subscriptions Entity more user-friendly
-    // by presenting userID as userName, and subtierID as subscriptionType
-    let query1 = 
-        `SELECT
+    let query1 = `
+        SELECT
             subs.subscriptionID,
             CONCAT(usr.firstName, ' ', usr.lastName) AS userName,
             tier.subscriptionType AS subscriptionType,
@@ -204,15 +205,28 @@ app.get('/subscriptions', function(req, res) {
         ORDER BY
             subs.subscriptionID;`;
 
+    let sub_select = `
+        SELECT DISTINCT subtierID, subscriptionType AS subDropType FROM SubscriptionTiers;`;
+
     db.pool.query(query1, function(error, rows, fields) {
         if (error) {
-            console.log(error);
-            res.sendStatus(500); // Internal Server Error
-        } else {
-            res.render('subscriptions', { data: rows });
+            console.error(error);
+            return res.status(500).send('Internal Server Error');
         }
+        let subread = rows;
+        
+        db.pool.query(sub_select, function(error, rows, fields) {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Internal Server Error');
+            }
+            let drop = rows;
+            
+            return res.render('subscriptions', {data: subread, subscriptions: drop});
+        });
     });
 });
+
 
 
 // Routes Section: UPDATE Subscriptions
@@ -569,17 +583,15 @@ app.put('/put-user-ajax', function(req,res,next){
 // ROUTES MOVIES Entity
 // Routes Section: SELECT MOVIE
 app.get('/movies', function(req, res)
-    {  
-        let query1 = `SELECT * FROM Movies;`;               // Define our query
-
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
-
-            res.render('movies', {data: rows});                  // Render the movies.hbs file, and also send the renderer
-        })                                                      // an object where 'data' is equal to the 'rows' we
-    });
+{  
+    let query1 = "SELECT * FROM Movies;";
+    // Run the main query
+    db.pool.query(query1, function(error, rows, fields){
+        let movies = rows;
+                return res.render('movies', {data: movies});
+        })
+});
     
-
-
 // ROUTES Section: ADD MOVIE
 app.post('/add-movie-ajax', function(req, res) 
 {
@@ -607,14 +619,10 @@ app.post('/add-movie-ajax', function(req, res)
 
         // Check to see if there was an error
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error)
             res.sendStatus(400);
         }
-        else
-        {
-            // If there was no error, perform a SELECT * on Movies
+        else {
             query2 = `SELECT * FROM Movies;`;
             db.pool.query(query2, function(error, rows, fields){
 
@@ -626,8 +634,7 @@ app.post('/add-movie-ajax', function(req, res)
                     res.sendStatus(400);
                 }
                 // If all went well, send the results of the query back.
-                else
-                {
+                else {
                     res.send(rows);
                 }
             })
@@ -670,8 +677,6 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 // UPDATE MOVIE
 app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
-  
-
     // Ensure movieID is parsed to an integer
     let movieID = parseInt(data.movieID);
     let title = data.title;

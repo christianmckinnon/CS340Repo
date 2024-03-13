@@ -65,9 +65,10 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             }
         }
     function newGenre() { showform('insert'); }
-    function updateGenre(newGenreID) { 
+    function updateGenre(newGenreID, newGenreType) { 
         showform('all');
         document.getElementById("update-genre-id").value = newGenreID;
+        document.getElementById("input-update-genreType").value = newGenreType;
      }
     function browseGenre() { showform ('browse'); }
     function showAll() { showform ('all'); }
@@ -77,10 +78,28 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
     <h2>Genres Entity</h2>
         <p> This entity, which represents the category each Movie falls into, allows a database  
-                administrator to ADD or UPDATE a Genre. We do not feel that it is appropriate to DELETE an 
-                existing Genre as they can, at any point, be updated to reflect changing trends in 
-                film and streaming.
-            </p>
+            administrator to ADD or UPDATE a Genre. An existing Genre can, at any point,
+            be updated to reflect changing trends in film and streaming.</p>
+<!-- UPDATE Genre -->
+<div id="update">
+  <legend><h2>Update Genre</h2></legend>
+  <p> A form to update an existing Genre in the database. Sometimes a genre can "change" or blend with others 
+    over time and so a user can make those changes with this form. The attributes are autopopulated
+    based on which "Edit" button is selected from the table above.</p>
+    <form id="update-genre-form-ajax">
+        
+          <input type="hidden" name="update-genre-id" id="update-genre-id"/>
+
+          <label for="input-update-genreType">Genre Type: </label>
+          <input type="text" name="input-update-genreType" id="input-update-genreType">
+          
+          <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre" onClick="browseGenre()">
+          <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
+          
+	</form>
+    <p></p>
+<script src="./js/update_genre.js"></script> 
+</div>
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
@@ -103,11 +122,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         {{!-- For each row, print the genreID, genreType, and price in order --}}
             <td>{{this.[genreID]}}</td>
             <td>{{this.[genreType]}}</td>
-            <td><button class="updateGenreButton" onClick="updateGenre({{this.[genreID]}})">Edit</button></td>
+            <td><button class="updateGenreButton" onClick="updateGenre('{{this.[genreID]}}', '{{this.[genreType]}}')">Edit</button></td>
         </tr>
         {{/each}}
 </table>
-<p>&nbsp;</p>
+<p></p>
 {{!--<script src="./js/delete_user.js"></script> --}}
 
 </div> 
@@ -129,25 +148,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div>
 <p>&nbsp;</p>
 
-<!-- UPDATE Genre -->
-<div id="update">
-  <legend><h2>Update Genre</h2></legend>
-  <p> A form to update an existing Genre in the database. Sometimes a genre can "change" or blend with others 
-    over time and so a user can make those changes with this form. The genreID is autopopulated
-    based on which "Edit" button is selected from the table above.</p>
-    <form id="update-genre-form-ajax">
-        
-          <input type="hidden" name="update-genre-id" id="update-genre-id"/>
-
-          <label for="input-update-genreType">Genre Type: </label>
-          <input type="text" name="input-update-genreType" id="input-update-genreType">
-          
-          <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre" onClick="browseGenre()">
-          <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
-          
-	</form>
-<script src="./js/update_genre.js"></script> 
-</div>
+<p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>

@@ -65,9 +65,15 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             }
         }
     function newMovie() { showform('insert'); }
-    function updateMovie(newMovieID) { 
+    function updateMovie(newMovieID, newTitle, newDirector, newYear, newDuration, newLanguage) {
         showform('all');
         document.getElementById("update-movie-id").value = newMovieID;
+        document.getElementById("input-update-title").value = newTitle;
+        document.getElementById("input-update-director").value = newDirector;
+        document.getElementById("input-update-year").value = newYear;
+        document.getElementById("input-update-duration").value = newDuration;
+        document.getElementById("input-update-language").value = newLanguage;
+        
      }
     function deleteMovie(newMovieID){ showform ('delete'); }
     function browseMovieMovie() { showform ('browse'); }
@@ -81,6 +87,38 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <p>Within this entity, a database administrator can ADD, UPDATE, or DELETE a movie from 
     the Streamathon catalog. If a movie is deleted, its corresponding Rating (in the Ratings entity) 
     will be deleted as well. Additionally, a Movie's attributes can be updated here.</p>
+
+<!-- UPDATE -->
+<div id="update">
+  <legend><h2>Update Movie</h2></legend>
+  <p>The below is a form to update a single Movie entry by movieID. The movie Title and Year 
+    are <strong>required</strong>.
+  </p>
+    <form id="update-movie-form-ajax">
+        
+          <input type="hidden" name="update-movie-id" id="update-movie-id"/>
+
+          <label for="input-update-title">Title: </label>
+          <input type="text" name="input-update-title" id="input-update-title" required>  
+          
+          <label for="input-update-director">Director: </label>
+          <input type="text" name="input-update-director" id="input-update-director">
+
+          <label for="input-update-year">Year:</label>
+          <input type="number" id="input-update-year" name="input-update-year" required>
+
+          <label for="input-update-duration">Duration:</label>
+          <input type="text" id="input-update-duration" name="input-update-duration">
+
+          <label for="input-update-language">Language:</label>
+          <input type="text" id="input-update-language" name="input-update-language">
+
+          <input class="btn" type="submit" id="UpdateSaveMove" value="Update Movie" onClick="browseMovieMovie()">
+          <input class="btn" type="button" value="cancel" onClick="browseMovieMovie()">
+	</form>
+<script src="./js/update_movie.js"></script> 
+</div>
+<p></p>
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
@@ -110,11 +148,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[duration]}}</td>
             <td>{{this.[language]}}</td>
             <td><button onclick="deleteMovie({{this.[movieID]}})">Delete</button></td>
-            <td><button onClick="updateMovie({{this.[movieID]}})">Edit</button></td>
+            <td><button onClick="updateMovie({{this.[movieID]}}, '{{this.[title]}}', '{{this.[director]}}',
+                                            '{{this.[year]}}', '{{this.[duration]}}', '{{this.[language]}}')">Edit</button></td>
         </tr>
         {{/each}}
 </table>
-<p>&nbsp;</p>
 <script src="./js/delete_movie.js"></script>
 
 </div> 
@@ -125,13 +163,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     <form id="add-movie-form">
         <fieldset>
       <label for="input-title">Title: </label>
-      <input type="text" name="input-title" id="input-title">
+      <input type="text" name="input-title" id="input-title" required> 
       
       <label for="input-director">Director: </label>
       <input type="text" name="input-director" id="input-director">
 
       <label for="input-year">Year: </label>
-      <input type="number" name="input-year" id="input-year">
+      <input type="number" name="input-year" id="input-year" required>
 
       <label for="input-duration">Duration: </label>
       <input type="number" name="input-duration" id="input-duration">
@@ -146,85 +184,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_movie.js"></script>
 </div>
-<p>&nbsp;</p>
 
-<!-- UPDATE -->
-<div id="update">
-  <legend><h2>Update Movie</h2></legend>
-  <p>The below is a form to update a single Movie entry by movieID. The movieID is autopopulated
-     based on which "Edit" button is selected from the table above.</p>
-    <form id="update-movie-form-ajax">
-        
-          <input type="hidden" name="update-movie-id" id="update-movie-id"/>
-
-          <label for="input-update-title">Title: </label>
-          
-          <select name="input-update-title" id="input-update-title">
-            <option value="test">Select a Movie</option>
-            {{#each data}}
-                <option value="{{this.title}}">{{this.title}}</option>
-            {{/each}}
-            </select>
-          
-          <label for="input-update-director">Director: </label>
-          <input type="text" name="input-update-director" id="input-update-director">
-
-          <label for="input-update-year">Year:</label>
-          <input type="number" id="input-update-year" name="input-update-year" required>
-
-          <label for="input-update-duration">Duration:</label>
-          <input type="text" id="input-update-duration" name="input-update-duration">
-
-          <label for="input-update-language">Language:</label>
-          <input type="text" id="input-update-language" name="input-update-language">
-
-          <input class="btn" type="submit" id="UpdateSaveMove" value="Update Movie" onClick="browseMovieMovie()">
-          <input class="btn" type="button" value="cancel" onClick="browseMovieMovie()">
-	</form>
-<script src="./js/update_movie.js"></script> 
-</div>
-
-<!--This a form to implement the M:N UPDATE functionality from a Movie to the MoviesGenresTable-->
-<h2>Add a Genre to a Movie:</h2>
-<p> <strong>NOTE: This is not yet implemented as it functions as an M:N relationship with an external entity.</strong>
-    This is a form that matches a Movie with its corresponding Genre in the MoviesGenres Intersection Table. 
-    It allows us to implement the INSERT requirement that adds a corresponding FK attribute in a M:N relationship 
-    (As seen on the Ed Discussion post). Note: A new entry can only be made when a movieID and genreID already 
-    exist within the database.
-</p>
-<form action="#" method="POST">
-    <fieldset>
-        <div>
-            <label for="title">Movie title: Movie</label>
-            <select id="title" name="title" required>
-                <option value="">Select a Movie title</option>
-                <option value="1">Titanic</option>
-                <option value="2">Interstellar</option>
-                <option value="3">Pan's Labyrinth</option>
-                <option value="4">La La Land</option>
-                <option value="5">Spirited Away</option>
-                <option value="6">Fight Club</option>
-                <option value="7">Oppenheimer</option>
-                <option value="8">Avatar</option>
-            </select>
-            <span class="required-text">Required*</span>
-        </div>
-        <div>
-            <label for="genreType">GenreType: Genre</label>
-            <select id="genreType" name="genreType" required>
-                <option value="">Select a Genre</option>
-                <option value="1">Drama</option>
-                <option value="2">Fantasy</option>
-                <option value="3">Sci-Fi</option>
-                <option value="4">Animation</option>
-                <option value="5">Romance</option>
-                <option value="6">Action</option>
-            </select>
-            <span class="required-text">Required*</span>
-        </div>
-    <button type="submit">Add Entry</button>
-</fieldset>
-</form>
+<p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>

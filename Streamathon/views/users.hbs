@@ -65,9 +65,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             }
         }
     function newUser() { showform('insert'); }
-    function updateUser(newUserID) { 
+    function updateUser(newUserID, newFirstName, newLastName, newEmail, newAge) { 
         showform('all');
         document.getElementById("update-user-id").value = newUserID;
+        document.getElementById("input-update-firstName").value = newFirstName;
+        document.getElementById("input-update-lastName").value = newLastName;
+        document.getElementById("input-update-email").value = newEmail;
+        document.getElementById("input-update-age").value = newAge;
      }
     function deleteUser(newUserID){ showform ('delete'); }
     function browseUserUser() { showform ('browse'); }
@@ -82,6 +86,34 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         Updated User attributes only take place within this entity and so no UPDATE CASCADE is 
         required. When a User is removed from the database, an ON DELETE CASCADE ensures that the 
         corresponding rating is removed.
+
+<!-- UPDATE User -->
+<div id="update">
+  <legend><h2>Update User</h2></legend>
+  <p>This is a form to update an existing User in the above database. The userID 
+     is autopopulated based on which "Edit" button is selected from the table above.</p>
+    <form id="update-user-form-ajax">
+        
+          <input type="hidden" name="update-user-id" id="update-user-id"/>
+
+          <label for="input-update-firstName">First Name: </label>
+          <input type="text" name="input-update-firstName" id="input-update-firstName" required>
+
+          <label for="input-update-lastName">Last Name: </label>
+          <input type="text" name="input-update-lastName" id="input-update-lastName" required>
+
+          <label for="input-update-email">Email: </label>
+          <input type="text" name="input-update-email" id="input-update-email" required>
+
+          <label for="input-update-age">Age: </label>
+          <input type="number" name="input-update-age" id="input-update-age">
+
+          <input class="btn" type="submit" id="UpdateSaveUser" value="Update User" onClick="browseUserUser()">
+          <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
+	</form>
+<script src="./js/update_user.js"></script> 
+</div>
+<p></p>
 
 <!-- BROWSE / DELETE -->
 <div id="browse">
@@ -110,11 +142,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[email]}}</td>
             <td>{{this.[age]}}</td>
             <td><button onclick="deleteUser({{this.[userID]}})">Delete</button></td>
-            <td><button onClick="updateUser({{this.[userID]}})">Edit</button></td>
+            <td><button onClick="updateUser('{{this.[userID]}}', '{{this.[firstName]}}', '{{this.[lastName]}}',
+                                            '{{this.[email]}}', '{{this.[age]}}')">Edit</button></td>
         </tr>
         {{/each}}
 </table>
-<p>&nbsp;</p>
 <script src="./js/delete_user.js"></script>
 
 </div> 
@@ -127,13 +159,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     <form id="add-user-form">
         <fieldset>
       <label for="input-firstName">First Name: </label>
-      <input type="text" name="input-firstName" id="input-firstName">
+      <input type="text" name="input-firstName" id="input-firstName" required>
       
       <label for="input-lastName">Last Name: </label>
-      <input type="text" name="input-lastName" id="input-lastName">
+      <input type="text" name="input-lastName" id="input-lastName" required>
 
       <label for="input-email">Email: </label>
-      <input type="text" name="input-email" id="input-email">
+      <input type="text" name="input-email" id="input-email" required>
 
       <label for="input-age">Age: </label>
       <input type="number" name="input-age" id="input-age">
@@ -147,32 +179,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div>
 <p>&nbsp;</p>
 
-<!-- UPDATE User -->
-<div id="update">
-  <legend><h2>Update User</h2></legend>
-  <p>This is a form to update an existing User in the above database. The userID 
-     is autopopulated based on which "Edit" button is selected from the table above.</p>
-    <form id="update-user-form-ajax">
-        
-          <input type="hidden" name="update-user-id" id="update-user-id"/>
-
-          <label for="input-update-firstName">First Name: </label>
-          <input type="text" name="input-update-firstName" id="input-update-firstName">
-
-          <label for="input-update-lastName">Last Name: </label>
-          <input type="text" name="input-update-lastName" id="input-update-lastName">
-
-          <label for="input-update-email">Email: </label>
-          <input type="text" name="input-update-email" id="input-update-email">
-
-          <label for="input-update-age">Age: </label>
-          <input type="number" name="input-update-age" id="input-update-age">
-
-          <input class="btn" type="submit" id="UpdateSaveUser" value="Update User" onClick="browseUserUser()">
-          <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
-	</form>
-<script src="./js/update_user.js"></script> 
-</div>
+<p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>

@@ -78,6 +78,43 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
                 Users or Movies. Note: a User cannot create duplicate entries of a Rating with the same movieID. This constraint 
                 is in place to prevent abusing our rating system with inflated ratings. </p>
 
+<!-- UPDATE Rating-->
+<div id="update">
+  <legend><h2>Update a Rating</h2></legend>
+        <p> The below form is used to update an existing Rating in the database. The ratingID is autopopulated
+            based on which "Edit" button is selected from the table above.</p>
+    <form id="update-rating-form-ajax">
+        
+        <input type="hidden" name="update-rating-id" id="update-rating-id"/>  
+
+        <label for="input-update-userID">UserName (userID): </label>
+        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" readonly="readonly" disabled>
+      
+
+        <label for="input-update-movieID">Movie (movieID): </label>
+        <input type="text" class="hidden" name="input-update-movieID" id="input-update-movieID" readonly="readonly" disabled>
+      
+
+        <label for="input-update-user-rating">User Rating: </label>
+        <select name="input-update-user-rating" id="input-update-user-rating" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <label for="input-update-rating-date">Rating Date: </label>
+        <input type="date" name="input-update-rating-date" id="input-update-rating-date">
+
+        <input class="btn" type="submit" id="UpdateSaveRating" value="Update Rating" onClick="browseRating()">
+        <input class="btn" type="button" value="Cancel" onClick="browseRating()">
+          
+	</form>
+    <p></p>
+<script src="./js/update_rating.js"></script> 
+</div>
+
 <!-- BROWSE / DELETE -->
 <div id="browse">
 <table border="1" cellpadding="2", id = "ratings-table">
@@ -108,7 +145,6 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         </tr>
         {{/each}}
 </table>
-<p>&nbsp;</p>
 <script src="./js/delete_rating.js"></script>
 </div> 
 
@@ -137,10 +173,16 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             </select>
 
       <label for="input-rating">Rating: </label>
-      <input type="number" name="input-rating" id="input-rating">
+      <select name="input-rating" id="input-rating" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
 
       <label for="input-date">Date: </label>
-      <input type="date" name="input-date" id="input-date">
+      <input type="date" name="input-date" id="input-date" required>
 
           <input class="btn" type="submit" id="addRating" value="Add Rating" onClick="browseRating()">
           <input class="btn" type="button" value="Cancel" onClick="browseRating()">
@@ -151,35 +193,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div>
 <p>&nbsp;</p>
 
-<!-- UPDATE Rating-->
-<div id="update">
-  <legend><h2>Update a Rating</h2></legend>
-        <p> The below form is used to update an existing Rating in the database. The ratingID is autopopulated
-            based on which "Edit" button is selected from the table above.</p>
-    <form id="update-rating-form-ajax">
-        
-        <input type="hidden" name="update-rating-id" id="update-rating-id"/>  
-
-        <label for="input-update-userID">UserName (userID): </label>
-        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" readonly="readonly" disabled>
-      
-
-        <label for="input-update-movieID">Movie (movieID): </label>
-        <input type="text" class="hidden" name="input-update-movieID" id="input-update-movieID" readonly="readonly" disabled>
-      
-
-        <label for="input-update-user-rating">User Rating: </label>
-        <input type="text" name="input-update-user-rating" id="input-update-user-rating">
-
-        <label for="input-update-rating-date">Rating Date: </label>
-        <input type="date" name="input-update-rating-date" id="input-update-rating-date">
-
-        <input class="btn" type="submit" id="UpdateSaveRating" value="Update Rating" onClick="browseRating()">
-        <input class="btn" type="button" value="Cancel" onClick="browseRating()">
-          
-	</form>
-<script src="./js/update_rating.js"></script> 
-</div>
+<p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
