@@ -53,6 +53,7 @@ updateSubscriptionForm.addEventListener("submit", function (e) {
             updateRow(xhttp.response, subscriptionIDValue);
 
             // Reset required fields
+            inputUserName.value = '';
             inputSubscriptionType.value = '';
             inputSubscriptionStatus.value = '';
             inputAutoRenew.value = '';
@@ -95,6 +96,7 @@ updateSubscriptionForm.addEventListener("submit", function (e) {
                 subscriptionTypeTd.innerHTML = (document.getElementById("input-update-subTierID").value);
                 subscriptionStatusTd.innerHTML = (document.getElementById("input-update-subscription-status").value);
                 autoRenewTd.innerHTML = (document.getElementById("input-update-auto-renew").value);
+                
         }
      }
 }

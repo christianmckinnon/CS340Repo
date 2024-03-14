@@ -68,7 +68,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     function updateMovie(newMovieID, newTitle, newDirector, newYear, newDuration, newLanguage) {
         showform('all');
         document.getElementById("update-movie-id").value = newMovieID;
-        document.getElementById("input-update-title").value = newTitle;
+        document.getElementById("input-update-title").value = decodeURIComponent(newTitle);
         document.getElementById("input-update-director").value = newDirector;
         document.getElementById("input-update-year").value = newYear;
         document.getElementById("input-update-duration").value = newDuration;

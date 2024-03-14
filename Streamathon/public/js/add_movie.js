@@ -61,6 +61,7 @@ addMovieForm.addEventListener("submit", function (e) {
             inputYear.value = '';
             inputDuration.value = '';
             inputLanguage.value = '';
+            location.reload(); // To ensure the row updates automatically
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -138,7 +139,7 @@ addRowToTable = (data) => {
 
     // Add the row to the table
     currentTable.appendChild(row);
-    location.reload(); // To ensure added buttons are updated
+    
     // COMMENT OUT as we're not using Dropdown currently
 
     // // Find drop down menu, create a new option, fill data in the option (full name, id),

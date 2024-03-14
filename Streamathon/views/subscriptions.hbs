@@ -58,11 +58,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             }
         }
     //function newSubscription() { showform('insert'); }
+   
     function updateSubscription(newSubscriptionID, newUserID) { 
         showform('all');
         document.getElementById("update-subscription-id").value = newSubscriptionID;
         document.getElementById("input-update-userID").value = newUserID;
      }
+     
     function browseSubscription() { showform ('browse'); }
     function showAll() { showform ('all'); }
 </script>
@@ -75,6 +77,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
                 This is implemented through the ON-DELETE CASCADE functionality. A User must already exist within the 
                 Users entity before they can be connected to a Subscription. Once they have been added, they will appear
                 with a NULL value for subTierID, Inactive for subscriptionStatus and No for autorenew. <br>
+                <strong>NULLable Relationship:</strong>Within this entity, a database administrator can set the foreign 
+                key value userID (userName) to NULL using UPDATE, that removes the relationship. <br>
                 <strong>Process to INSERT a Subscription for New Users: Add a New User in Users, then update their Subscription here.</strong>
             </p>
 
@@ -82,17 +86,22 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <div id="update">
   <legend><h2>Update Subscription</h2></legend>
   <p> This is a form that allows a user to update a Subscription. The userName is autopopulated,
-      then we can select a subscriptionType, their subscriptionStatus and whether they will AutoRenew their plan.</p>
+      then we can select a subscriptionType, their subscriptionStatus and whether they will AutoRenew their plan.<br>
+      <strong>To set the FK userID (username) to NULL, simply delete the userName in the textbox to remove the relationship.</strong>
+      <br><strong>Important:</strong> To re-add a User whose FK has been removed, please re-enter their name (EXACTLY). Also, if any other name 
+        other than the original userName is typed, the userName will default to NULL as the userName and userID are permanently linked.
+      </p>
     <form id="update-subscription-form-ajax">
         
         <input type="hidden" name="update-subscription-id" id="update-subscription-id"/>
 
         <label for="input-update-userID">Username (userID): </label>
-        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" readonly="readonly" disabled>
+        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" > <!-- readonly="readonly" disabled-->
 
-        <label for="input-update-subTierID">Subscription Tier ID: </label>
+
+        <label for="input-update-subTierID">Subscription Type: </label>
         <select name="input-update-subTierID" id="input-update-subTierID">
-                <option value="test">Select a Sub Type</option>
+                <option value="test">Select Type</option>
                 {{#each subscriptions}}
                     <option value="{{this.subDropType}}">{{this.subDropType}}</option>
                 {{/each}}

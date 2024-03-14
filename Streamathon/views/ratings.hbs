@@ -72,9 +72,9 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body onload="browseRating()">
 
     <h2>Ratings Entity</h2>
-        <p> Within this entity, which represents the ratings Users assign to a Movie, a database administrator 
-                can ADD, UPDATE, and DELETE a Rating. Adding a Rating requires a corresponding userID and movieID, while 
-                updating one requires only the PK, the ratingID. When a Rating is deleted, it has no effect on its FKs, 
+        <p> The Ratings composite entity implements the M:N relationship between Users and Movies. On this page, a database 
+                administrator can INSERT, READ, UPDATE, and DELETE a Rating. Adding a Rating requires a corresponding userID and movieID, 
+                while updating one requires only the PK, the ratingID. When a Rating is deleted, it has no effect on its FKs, 
                 Users or Movies. Note: a User cannot create duplicate entries of a Rating with the same movieID. This constraint 
                 is in place to prevent abusing our rating system with inflated ratings. </p>
 

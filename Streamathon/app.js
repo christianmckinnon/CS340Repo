@@ -29,6 +29,8 @@ var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
+
+
 // Database
 var db = require('./database/db-connector')
 
@@ -47,6 +49,7 @@ show_ratings_table = `
 
 user_dropdown = "SELECT userID, CONCAT(firstName, ' ', lastName) AS fullName FROM Users;";
 movie_dropdown = "SELECT movieID, title FROM Movies;";
+genre_dropdown = "SELECT genreID, genreType FROM Genres;";
 
 // ORIGINAL APP ROUTE TO INDEX
 app.get('/index', function(req, res) {
@@ -172,38 +175,102 @@ app.put('/put-rating-ajax', function(req,res,next){
 // Routes Section: SELECT MoviesGenres
 app.get('/movgentable', function(req, res)
 {  
-     // Define our query
+    let movie_drop = movie_dropdown; // Dropdown for adding movie title
+    let gen_drop = genre_dropdown;  // Dropdown for adding genre type
     let query1 = 
     `SELECT 
         mov.title AS movieTitle, gen.genreType AS movieGenre FROM Movies mov
         INNER JOIN MoviesGenresTable MGT ON mov.movieID = MGT.movieID
         INNER JOIN Genres gen ON MGT.genreID = gen.genreID
-        GROUP BY movieTitle;`;
+        GROUP BY mov.movieID;`;
     
-    db.pool.query(query1, function(error, rows, fields){    // Execute the query
-
-        res.render('movgentable', {data: rows});               // Render the movgentable.hbs file, and also send the renderer
-    })                                                      // an object where 'data' is equal to the 'rows' we
+    db.pool.query(query1, function(error, rows, fields){ 
+        let movgen = rows;
+        db.pool.query(movie_drop, function(error, rows, fields){
+            let movies= rows;
+            db.pool.query(gen_drop, function(error, rows, fields){
+                let genres = rows;
+                    res.render('movgentable', {data: movgen, movies: movies, genres: genres});        
+            })     
+        })    
+    })                                                  
 });
+
+// Routes Section: INSERT MoviesGenres
+app.post('/add-movie-genre-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    let insert_movgen = `INSERT INTO MoviesGenresTable (movieID, genreID)
+                            SELECT
+                            (SELECT movieID FROM Movies WHERE title = '${data.title}') AS movieInput,
+                            (SELECT genreID FROM Genres WHERE genreType = '${data.genreType}') AS userInput;`
+
+
+    db.pool.query(insert_movgen, function(error, rows, fields){
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        } else {
+            query2 = `SELECT * FROM Genres;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+// UPDATE MoviesGenres
+// Routes Section: UPDATE Genre
+app.put('/put-movie-genre-ajax', function(req,res,next){
+    let data = req.body;
+    let title = data.title;
+    let genreType = data.genreType;
+
+    // Construct the UPDATE query
+    let queryUpdateMovieGenre = `UPDATE MoviesGenresTable
+                                    SET genreID = (
+                                            SELECT genreID
+                                            FROM Genres
+                                            WHERE genreType = '${data.genreType}'
+                                        )
+                                    WHERE movieID = (
+                                            SELECT movieID
+                                            FROM Movies
+                                            WHERE title = '${data.title}');`
+  
+          // Run the UPDATE query
+          db.pool.query(queryUpdateMovieGenre, [title, genreType], function(error, rows, fields){
+                          res.send(rows);
+                  })
+              });
 
 // ROUTES Subscriptions Entity
 // Routes Section: SELECT Subscription
 app.get('/subscriptions', function(req, res) {  
-    let query1 = `
-        SELECT
-            subs.subscriptionID,
-            CONCAT(usr.firstName, ' ', usr.lastName) AS userName,
-            tier.subscriptionType AS subscriptionType,
-            IF(subs.subscriptionStatus = 1, 'Active', 'Inactive') AS subscriptionStatus,
-            IF(subs.autoRenew = 1, 'Yes', 'No') AS autoRenew
-        FROM
-            Users usr
-        LEFT JOIN
-            Subscriptions subs ON usr.userID = subs.userID
-        LEFT JOIN
-            SubscriptionTiers tier ON subs.subTierID = tier.subTierID
-        ORDER BY
-            subs.subscriptionID;`;
+    // This query displays userID as userName, subtierID as subscriptionType and accounts for when userID is made NULL
+    let query1 = `SELECT
+                    subs.subscriptionID,
+                    CONCAT(COALESCE(usr.firstName, ''), ' ', COALESCE(usr.lastName, '')) AS userName,
+                    tier.subscriptionType AS subscriptionType,
+                    IF(subs.subscriptionStatus = 1, 'Active', 'Inactive') AS subscriptionStatus,
+                    IF(subs.autoRenew = 1, 'Yes', 'No') AS autoRenew
+                FROM
+                    Subscriptions subs
+                LEFT JOIN
+                    Users usr ON usr.userID = subs.userID
+                LEFT JOIN
+                    SubscriptionTiers tier ON subs.subTierID = tier.subTierID
+                ORDER BY
+                    subs.subscriptionID;`
 
     let sub_select = `
         SELECT DISTINCT subtierID, subscriptionType AS subDropType FROM SubscriptionTiers;`;
@@ -227,8 +294,6 @@ app.get('/subscriptions', function(req, res) {
     });
 });
 
-
-
 // Routes Section: UPDATE Subscriptions
 app.put('/put-subscription-ajax', function(req,res,next){
     let data = req.body;
@@ -248,7 +313,7 @@ app.put('/put-subscription-ajax', function(req,res,next){
                                         subscriptionStatus = ?,
                                         autoRenew = ?
                                         WHERE subscriptionID = ?`;
-
+    
 
     let selectSubscription = `SELECT * FROM Subscriptions WHERE subscriptionID = ?`;
   
@@ -256,27 +321,11 @@ app.put('/put-subscription-ajax', function(req,res,next){
           db.pool.query(queryUpdateSubscription, [userName, subscriptionType, subscriptionStatus, autoRenew, subscriptionID], function(error, rows, fields){
               if (error) {
   
-              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-              console.log(error);
-              res.sendStatus(400);
-              }
-  
-              // If there was no error, we run our second query and return that data so we can use it to update the people's
-              // table on the front-end
-              else
-              {
-                  // Run the second query
-                  db.pool.query(selectSubscription, [subscriptionID], function(error, rows, fields) {
-  
-                      if (error) {
-                          console.log(error);
-                          res.sendStatus(400);
-                      } else {
+              
                           res.send(rows);
                       }
-                  })
-              }
-  })});
+                    }) 
+              });
 
 // ROUTES Genres Entity
 // Routes Section: SELECT Genre
@@ -614,7 +663,7 @@ app.post('/add-movie-ajax', function(req, res)
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Movies (title, director, year, duration, language)
-    VALUES ('${data.title}', '${data.director}', '${data.year}', '${data.duration}', '${data.language}');`
+    VALUES ("${data.title}", "${data.director}", '${data.year}', '${data.duration}', '${data.language}');`
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
