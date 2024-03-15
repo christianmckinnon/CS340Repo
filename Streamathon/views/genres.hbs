@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +37,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+        <main>
+        <section>
      <head>
     <title>Genres</title>
     <script language="JavaScript">
@@ -82,21 +82,22 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             be updated to reflect changing trends in film and streaming.</p>
 <!-- UPDATE Genre -->
 <div id="update">
-  <legend><h2>Update Genre</h2></legend>
+  <legend><h2 h2 style="text-align: center;">Update Genre</h2>
   <p> A form to update an existing Genre in the database. Sometimes a genre can "change" or blend with others 
     over time and so a user can make those changes with this form. The attributes are autopopulated
     based on which "Edit" button is selected from the table above.</p>
     <form id="update-genre-form-ajax">
-        
+        <fieldset class = "standard-form">
           <input type="hidden" name="update-genre-id" id="update-genre-id"/>
 
           <label for="input-update-genreType">Genre Type: </label>
           <input type="text" name="input-update-genreType" id="input-update-genreType">
           
-          <input class="btn" type="submit" id="UpdateSaveGenre" value="Update Genre" onClick="browseGenre()">
+          <input class="btn" type="submit" id="UpdateSaveGenre" value="Update" onClick="browseGenre()">
           <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
-          
+          </fieldset>
 	</form>
+    </legend>
     <p></p>
 <script src="./js/update_genre.js"></script> 
 </div>
@@ -132,22 +133,24 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div> 
 <!-- INSERT Genre -->
 <div id="insert">
-    <legend><h2>Add Genre:</h2></legend>
+    <legend><h2>Add Genre:</h2>
     <p> A form to add a new Genre to the database. (Nothing here can be NULL)</p> 
     <form id="add-genre-form">
-        <fieldset>
+        <fieldset class = "standard-form">
       <label for="input-genreType">Genre Type: </label>
       <input type="text" name="input-genreType" id="input-genreType">
       
-          <input class="btn" type="submit" id="addGenre" value="Add Genre" onClick="browseGenre()">
+          <input class="btn" type="submit" id="addGenre" value="Add" onClick="browseGenre()">
           <input class="btn" type="button" value="Cancel" onClick="browseGenre()">
     </fieldset>
 	</form> 
+    </legend>
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_genre.js"></script>
 </div>
 <p>&nbsp;</p>
-
+</section>
+    </main>
 <p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>

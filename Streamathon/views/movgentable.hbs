@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024 
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,19 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
+
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +38,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+    <main>
+    <section>
      <head>
     <title>MoviesGenresTable</title>
     <script language="JavaScript">
@@ -86,12 +87,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE MoviesGenresTable -->
 <div id="update">
-  <legend><h2>Update MovieGenre</h2></legend>
+  <legend><h2 style="text-align: center;">Update MovieGenre</h2>
   <p> A form to update an existing movie entry's Genre in the database. This is particularly helpful 
     if a database administrator accidentally selects the incorrect Genre when adding an entry to the table.
   </p>
     <form id="update-movie-genre-form-ajax">
-        
+         <fieldset class = "standard-form">
         <label for="input-update-movie-id">Movie Title: </label>
         <input type="text" class="hidden" name="input-update-movie-id" id="input-update-movie-id" readonly="readonly" disabled>
 
@@ -103,10 +104,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             {{/each}}
             </select>
         
-        <input class="btn" type="submit" id="UpdateSaveMovieGenre" value="Update MovieGenre" onClick="browseMovieGenre()">
+        <input class="btn" type="submit" id="UpdateSaveMovieGenre" value="Update" onClick="browseMovieGenre()">
         <input class="btn" type="button" value="Cancel" onClick="browseMovieGenre()">
-          
+          </fieldset>
 	</form>
+    </legend>
     <p></p>
 <script src="./js/update_moviegenre.js"></script> 
 </div>
@@ -132,7 +134,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         {{!-- For each row, print the movieID, genreType, and price in order --}}
             <td>{{this.[movieTitle]}}</td>
             <td>{{this.[movieGenre]}}</td>
-            <td><button class="updateMovieGenreButton" onClick="updateMovieGenre('{{this.[movieTitle]}}')">Edit</button></td>
+            <td><button class="updateMovieGenreButton" onClick='updateMovieGenre("{{this.[movieTitle]}}")'>Edit</button></td>
         </tr>
         {{/each}}
 </table>
@@ -141,14 +143,14 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- INSERT MovieGenre -->
 <div id="insert">
-    <legend><h2>Add MovieGenre Entry:</h2></legend>
+    <legend><h2 h2 style="text-align: center;">Add MovieGenre Entry:</h2>
     <p> A form to add a new entry to the MoviesGenres Intersection Table. <br><strong>Users can only add
         a new entry if a Movie does not already have a corresponding Genre.</strong> (Nothing here can be NULL). </p> 
     <form id="add-movie-genre-form">
-        <fieldset>
+        <fieldset class = "standard-form">
         <label for="input-moviegen">Movie: </label>
         <select name="input-moviegen" id="input-moviegen">
-            <option value="test">Select a title</option>
+            <option value="test">Select Title</option>
             {{#each movies}}
                 <option value="{{this.title}}">{{this.title}}</option>
             {{/each}}
@@ -156,26 +158,28 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
         <label for="input-genmovie">Genre: </label>
         <select name="input-genmovie" id="input-genmovie">
-            <option value="test">Select a genre</option>
+            <option value="test">Select Genre</option>
             {{#each genres}}
                 <option value="{{this.genreType}}">{{this.genreType}}</option>
             {{/each}}
             </select>
       
-          <input class="btn" type="submit" id="addMovieGenre" value="Add MovieGenre" onClick="browseMovieGenre()">
+          <input class="btn" type="submit" id="addMovieGenre" value="Add" onClick="browseMovieGenre()">
           <input class="btn" type="button" value="Cancel" onClick="browseMovieGenre()">
     </fieldset>
 	</form> 
+    </legend>
 <script src="./js/add_moviegen.js"></script>
 </div>
 <p></p>
 </div>
-
+</section>
+    </main>
 <p><br><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>

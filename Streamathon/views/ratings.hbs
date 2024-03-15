@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +37,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+    <main>
+        <section>
      <head>
     <title>Ratings</title>
     <script language="JavaScript">
@@ -80,11 +80,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE Rating-->
 <div id="update">
-  <legend><h2>Update a Rating</h2></legend>
+  <legend><h2 h2 style="text-align: center;">Update a Rating</h2>
         <p> The below form is used to update an existing Rating in the database. The ratingID is autopopulated
             based on which "Edit" button is selected from the table above.</p>
     <form id="update-rating-form-ajax">
-        
+        <fieldset class = "standard-form">
         <input type="hidden" name="update-rating-id" id="update-rating-id"/>  
 
         <label for="input-update-userID">UserName (userID): </label>
@@ -107,10 +107,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <label for="input-update-rating-date">Rating Date: </label>
         <input type="date" name="input-update-rating-date" id="input-update-rating-date">
 
-        <input class="btn" type="submit" id="UpdateSaveRating" value="Update Rating" onClick="browseRating()">
+        <input class="btn" type="submit" id="UpdateSaveRating" value="Update" onClick="browseRating()">
         <input class="btn" type="button" value="Cancel" onClick="browseRating()">
-          
+        </fieldset>
 	</form>
+    </legend>
     <p></p>
 <script src="./js/update_rating.js"></script> 
 </div>
@@ -150,54 +151,57 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- INSERT Rating -->
 <div id="insert">
-    <legend><h2>Add Rating:</h2></legend>
+    <legend><h2 h2 style="text-align: center;">Add Rating:</h2>
     <p> The below form is used to add a new Rating to the database (remember, a User can always update their  
         userRating, but they cannot create a duplicate rating with the same movieID).
     </p>
     <form id="add-rating-form">
-        <fieldset>
-      <label for="input-userID">User: </label>
-      <select name="input-userID" id="input-userID">
-            <option value="test">Select a userName</option>
-            {{#each users}}
-                <option value="{{this.fullName}}">{{this.fullName}}</option>
-            {{/each}}
-            </select>
-      
-      <label for="input-title">Movie Title: </label>
-      <select name="input-title" id="input-title">
-            <option value="test">Select a Movie</option>
-            {{#each movies}}
-                <option value="{{this.title}}">{{this.title}}</option>
-            {{/each}}
-            </select>
+    <fieldset class = "standard-form">
 
-      <label for="input-rating">Rating: </label>
-      <select name="input-rating" id="input-rating" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+    <label for="input-userID">User: </label>
+    <select name="input-userID" id="input-userID">
+        <option value="test">Select Name</option>
+        {{#each users}}
+            <option value="{{this.fullName}}">{{this.fullName}}</option>
+        {{/each}}
+        </select>
+    
+    <label for="input-title">Movie Title: </label>
+    <select name="input-title" id="input-title">
+        <option value="test">Select Movie</option>
+        {{#each movies}}
+            <option value="{{this.title}}">{{this.title}}</option>
+        {{/each}}
         </select>
 
-      <label for="input-date">Date: </label>
-      <input type="date" name="input-date" id="input-date" required>
+    <label for="input-rating">Rating: </label>
+    <select name="input-rating" id="input-rating" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
 
-          <input class="btn" type="submit" id="addRating" value="Add Rating" onClick="browseRating()">
-          <input class="btn" type="button" value="Cancel" onClick="browseRating()">
+    <label for="input-date">Date: </label>
+    <input type="date" name="input-date" id="input-date" class="custom-width" required>
+
+    <input class="btn" type="submit" id="addRating" value="Add" onClick="browseRating()">
+    <input class="btn" type="button" value="Cancel" onClick="browseRating()">
     </fieldset>
-	</form> 
+	</form>
+    </legend> 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_rating.js"></script>
 </div>
 <p>&nbsp;</p>
-
+</section>
+    </main>
 <p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>

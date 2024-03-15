@@ -1,7 +1,8 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 8: Dynamically Updating Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%208%20-%20Dynamically%20Updating%20Data
+/* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Professor Curry
+Citation: Code adapted from OSU 340 Github: Node Start App -  Step 8: Dynamically Updating Data 
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%208%20-%20Dynamically%20Updating%20Data */
 
 // This is our update_genre.js form to implement updating Genres entries in our database
 
@@ -29,12 +30,6 @@ updateMovieGenreForm.addEventListener("submit", function (e) {
         title: movieTitleValue,
         genreType: genreTypeValue,
     }
-
-    // No NULL values for genreType or email
-    // if (genreTypeValue == "") 
-    // {
-    //     return;
-    // }
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();

@@ -145,9 +145,10 @@ VALUES
 -- Next let's insert our Example Data into the SubscriptionTiers Table:
 INSERT INTO SubscriptionTiers (subTierID, subscriptionType, price)
 VALUES
-    (40000, 'Basic', 5.99),
-    (40001, 'Ad-Free', 9.99),
-    (40002, 'Premium', 14.99);
+    (40000, 'None', 0),
+    (40001, 'Basic', 5.99),
+    (40002, 'Ad-Free', 9.99),
+    (40003, 'Premium', 14.99);
 
 -- Next let's insert our Example Data into the Genres Table:
 INSERT INTO Genres (genreID, genreType)

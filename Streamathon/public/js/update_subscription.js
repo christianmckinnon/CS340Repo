@@ -1,7 +1,8 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 8: Dynamically Updating Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%208%20-%20Dynamically%20Updating%20Data
+/* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Professor Curry
+Citation: Code adapted from OSU 340 Github: Node Starter App - Step 8: Dynamically Updating Data
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%208%20-%20Dynamically%20Updating%20Data */
 
 // This is our update_subscription.js form to implement updating Subscription entries in our database
 
@@ -48,26 +49,24 @@ updateSubscriptionForm.addEventListener("submit", function (e) {
     // Tell our AJAX request how to resolve
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-
             // Add the new data to the table using subscriptionIDValue
             updateRow(xhttp.response, subscriptionIDValue);
 
-            // Reset required fields
-            inputUserName.value = '';
-            inputSubscriptionType.value = '';
+            // Reset required fields: ONLY substatus and autorenew to autoupdate
             inputSubscriptionStatus.value = '';
             inputAutoRenew.value = '';
-
-            // Reload the page to dynamically update the table
-            location.reload();
+            location.reload(); // Reload page to dynamically update
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
+        
         }
     }
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-})
+    location.reload();
+});
+
 
 
 // This function places the newly updated values back into the Subscriptions table
@@ -96,9 +95,13 @@ updateSubscriptionForm.addEventListener("submit", function (e) {
                 subscriptionTypeTd.innerHTML = (document.getElementById("input-update-subTierID").value);
                 subscriptionStatusTd.innerHTML = (document.getElementById("input-update-subscription-status").value);
                 autoRenewTd.innerHTML = (document.getElementById("input-update-auto-renew").value);
-                
         }
-     }
+     } 
 }
+
+
+
+
+
 
 

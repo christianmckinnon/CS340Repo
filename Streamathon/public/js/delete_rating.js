@@ -1,7 +1,8 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 7: Dynamically Deleting Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data
+/* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Professor Curry
+Citation: Code adapted from OSU 340 Github: Node Start App - Step 7: Dynamically Deleting Data
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data */
 
 
 // Modify the below code to match movieID with the row in order to delete the item
@@ -34,11 +35,9 @@ function deleteRating(ratingID) {
 
 
 function deleteRow(ratingID){
-
     let table = document.getElementById("ratings-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
+       // rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == ratingID) {
             table.deleteRow(i);
             break;

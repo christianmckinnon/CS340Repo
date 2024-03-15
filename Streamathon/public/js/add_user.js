@@ -1,7 +1,7 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 5: Adding New Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs
+/*  Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Citation: Code adapted from OSU 340 Github: Node Start App - Step 5: Adding New Data
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs */
 
 
 // This is our add_user.js form to implement adding new User entries into our database
@@ -52,12 +52,13 @@ addUserForm.addEventListener("submit", function (e) {
 
             // Add the new data to the table
             addRowToTable(xhttp.response);
-
             // Clear the input fields for another transaction
             inputFirstName.value = '';
             inputLastName.value = '';
             inputEmail.value = '';
             inputAge.value = '';
+            // Reload the page to dynamically update the table
+            location.reload();
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -71,7 +72,6 @@ addUserForm.addEventListener("submit", function (e) {
 
 
 // Creates a single row from an Object representing a single record from 
-// bsg_people
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -132,17 +132,4 @@ addRowToTable = (data) => {
 
     // Add the row to the table
     currentTable.appendChild(row);
-    // Reload the page to dynamically update the table
-    location.reload();
-
-    // COMMENT OUT as we're not using Dropdown currently
-
-    // // Find drop down menu, create a new option, fill data in the option (full name, id),
-    // // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh
-    // let selectMenu = document.getElementById("mySelect");
-    // let option = document.createElement("option");
-    // option.text = newRow.title;
-    // option.value = newRow.userID;
-    // selectMenu.add(option);
-    // // End of new step 8 code.
 }

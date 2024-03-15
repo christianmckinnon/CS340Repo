@@ -1,7 +1,8 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 5: Adding New Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs
+/* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Professor Curry
+Citation: Code adapted from OSU 340 Github: Node Start App - Step 5: Adding New Data
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs */
 
 // Get the objects we need to modify
 let addRatingForm = document.getElementById('add-rating-form');
@@ -60,7 +61,6 @@ addRatingForm.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(data));
 
 })
-
 
 // Creates a single row from an Object representing a single record from 
 addRowToTable = (data) => {
@@ -124,15 +124,4 @@ addRowToTable = (data) => {
 
     // Add the row to the table
     currentTable.appendChild(row);
-
-    // COMMENT OUT as we're not using Dropdown currently
-
-    // // Find drop down menu, create a new option, fill data in the option (full name, id),
-    // // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh
-    // let selectMenu = document.getElementById("mySelect");
-    // let option = document.createElement("option");
-    // option.text = newRow.title;
-    // option.value = newRow.movieID;
-    // selectMenu.add(option);
-    // // End of new step 8 code.
 }

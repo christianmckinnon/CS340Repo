@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +37,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+    <main>
+        <section>
     <head>
     <title>Users</title>
     <script language="JavaScript">
@@ -89,11 +89,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE User -->
 <div id="update">
-  <legend><h2>Update User</h2></legend>
+  <legend><h2 style="text-align: center;">Update User</h2>
   <p>This is a form to update an existing User in the above database. The userID 
      is autopopulated based on which "Edit" button is selected from the table above.</p>
     <form id="update-user-form-ajax">
-        
+        <fieldset class = "standard-form">
           <input type="hidden" name="update-user-id" id="update-user-id"/>
 
           <label for="input-update-firstName">First Name: </label>
@@ -108,9 +108,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
           <label for="input-update-age">Age: </label>
           <input type="number" name="input-update-age" id="input-update-age">
 
-          <input class="btn" type="submit" id="UpdateSaveUser" value="Update User" onClick="browseUserUser()">
+          <input class="btn" type="submit" id="UpdateSaveUser" value="Update" onClick="browseUserUser()">
           <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
+          </fieldset>
 	</form>
+    </legend>
 <script src="./js/update_user.js"></script> 
 </div>
 <p></p>
@@ -142,8 +144,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[email]}}</td>
             <td>{{this.[age]}}</td>
             <td><button onclick="deleteUser({{this.[userID]}})">Delete</button></td>
-            <td><button onClick="updateUser('{{this.[userID]}}', '{{this.[firstName]}}', '{{this.[lastName]}}',
-                                            '{{this.[email]}}', '{{this.[age]}}')">Edit</button></td>
+            <td><button onClick='updateUser({{this.[userID]}}, "{{this.[firstName]}}", "{{this.[lastName]}}",
+                                            "{{this.[email]}}", "{{this.[age]}}")'>Edit</button></td>
         </tr>
         {{/each}}
 </table>
@@ -152,12 +154,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div> 
 <!-- INSERT User -->
 <div id="insert">
-    <legend><h2>Add User:</h2></legend>
+    <legend><h2 style="text-align: center;">Add User:</h2>
     <p>This is a form to add a new User entry into the database. A user's firstName, lastName, or email cannot be NULL.
         When a new User is added to this entity, that same user will also be added to the Subscriptions entity as well.
     </p>
     <form id="add-user-form">
-        <fieldset>
+        <fieldset class = "standard-form">
       <label for="input-firstName">First Name: </label>
       <input type="text" name="input-firstName" id="input-firstName" required>
       
@@ -170,20 +172,22 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
       <label for="input-age">Age: </label>
       <input type="number" name="input-age" id="input-age">
   
-          <input class="btn" type="submit" id="addUser" value="Add User" onClick="browseUserUser()">
+          <input class="btn" type="submit" id="addUser" value="Add" onClick="browseUserUser()">
           <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
     </fieldset>
 	</form> 
+    </legend>
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_user.js"></script>
 </div>
 <p>&nbsp;</p>
-
+</section>
+    </main>
 <p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>

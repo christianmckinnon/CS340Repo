@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,19 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
+
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final-->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +38,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+    <main>
+        <section>
     <head>
     <title>Subscription Tiers</title>
     <script language="JavaScript">
@@ -86,11 +87,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE Subscription Tier -->
 <div id="update">
-  <legend><h2>Update Subscription Tier</h2></legend>
+  <legend><h2 style="text-align: center;">Update Subscription Tier</h2>
   <p> This is a form that allows us to update a SubscriptionTier. The data will be autopopulated
       based on which "Edit" button is selected from the table above. </p>
     <form id="update-subTier-form-ajax">
-        
+        <fieldset class = "standard-form">
           <input type="hidden" name="update-subTier-id" id="update-subTier-id"/>
 
           <label for="input-update-subscriptionType">Subscription Type: </label>
@@ -99,10 +100,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
           <label for="input-update-price">Price: </label>
           <input type="text" name="input-update-price" id="input-update-price" required> 
            
-          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update Subscription Tier" onClick="browseSubTier()">
+          <input class="btn" type="submit" id="UpdateSaveSubTier" value="Update" onClick="browseSubTier()">
           <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
-          
+          </fieldset>
 	</form>
+    </legend>
     <p></p>
 <script src="./js/update_subtier.js"></script> 
 </div>
@@ -130,8 +132,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[subTierID]}}</td>
             <td>{{this.[subscriptionType]}}</td>
             <td>{{this.[price]}}</td>
-            <td><button class="updateSubTierButton" onClick="updateSubTier('{{this.[subTierID]}}', '{{this.[subscriptionType]}}',
-                                                                            '{{this.[price]}}')">Edit</button></td>
+            <td><button class="updateSubTierButton" onClick='updateSubTier({{this.[subTierID]}}, "{{this.[subscriptionType]}}",
+                                                                            "{{this.[price]}}")'>Edit</button></td>
         </tr>
         {{/each}}
 </table>
@@ -141,30 +143,33 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div> 
 <!-- INSERT Subscription Tier -->
 <div id="insert">
-    <legend><h2>Add Subscription Tier:</h2></legend>
+    <legend><h2>Add Subscription Tier:</h2>
     <p> Here we can add a new SubscriptionTier, for example, if we wanted to add a "Premium Plus" plan, we 
         could do so using the below attributes. (Nothing here can be NULL).</p>
     <form id="add-subTier-form">
-        <fieldset>
+        <fieldset class = "standard-form">
       <label for="input-subscriptionType">Subscription Type: </label>
       <input type="text" name="input-subscriptionType" id="input-subscriptionType">
       
       <label for="input-price">Price: </label>
       <input type="text" name="input-price" id="input-price">
   
-          <input class="btn" type="submit" id="addSubTier" value="Add Subscription Tier" onClick="browseSubTier()">
+          <input class="btn" type="submit" id="addSubTier" value="Add" onClick="browseSubTier()">
           <input class="btn" type="button" value="Cancel" onClick="browseSubTier()">
     </fieldset>
 	</form> 
+    </legend>
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_subtier.js"></script>
 </div>
-<p><br><br><br><br><br></p>
+</section>
+    </main>
 
+<p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>

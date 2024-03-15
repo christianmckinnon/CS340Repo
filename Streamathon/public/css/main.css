@@ -1,0 +1,601 @@
+/* Hanjun Kim and Christian McKinnon, CS 340, 3/15/2024
+CSS Styles Code Adapted from CS290 Web Development Canvas Module Week 4: Overview-2 Cascading Style Sheets (CSS) 
+
+Citation: https://canvas.oregonstate.edu/courses/1933705/pages/module-4-overview-2?module_item_id=23487342
+  Professor Van Londen, CS 290, Oregon State University, 3/15/2024j
+*/
+
+/*   ----- Imports  -----  */
+  /* @import 'node_modules/modern-normalize/modern-normalize.css';  npm install modern-normalize  Resets elements for browser consistency.  https://www.npmjs.com/package/modern-normalize */         
+  /* @import "component1.css";   Component-specific stylesheets, if any.   */
+  /*@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); 
+  /* Heading font: Poppins from Google Fonts. */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lemonada:wght@600&family=Roboto&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Jacques+Francois&family=Lemonada:wght@600&family=Roboto&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+
+/*   ----- Variables  -----  */
+/* Colors based off of the background picture for the page */
+:root {
+    --black: #000000; /* Black color used for text */
+    --blue: #ABCBDD; /* Background color in each of the pages */
+    --white: #FFFFFF;
+    --gray: #D9D9D9; 
+    --lightBlue: #39A9EA;
+    
+  }
+  
+  /*  ----- Viewport ----- elements inherited by all remaining elements ----- */
+  body {       /* Can alternatively define in html {}. */
+    background-color: var(--blue); /* Include for when scrolling off page */
+    /*background-image:url(images/oahu-mountain-background-2022.jpg); */
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: top left;
+    background-repeat:no-repeat;
+
+    color: var(--black);
+    font-family: 'Jacques Francois', sans-serif; 
+    font-size: 1em; /* Set size by inheritance */
+    line-height: 1.2;
+    margin: 0 auto; /* To adjust when window collapses to smaller sizes */
+    padding: 0;
+    max-width: 1280px;
+  }
+
+  /*  ----- Page layout blocks -----  */
+  header {
+    background-color: var(--white);
+    margin: 10px 0 0 0 ;
+    padding: .5%;
+    /*border: 2px solid var(--gray); */
+    font-size: 1.3em;
+    font-weight:bold;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    width:auto;
+    align-items: center;
+  }
+
+  /* Set the formatting for main */
+  main {
+    background-color: var(--blue);  
+    margin: 0;
+    padding:0%;
+    border: 2px solid var(--blue);
+  }
+
+/* STYLES FOR INSERT & UPDATE FORMS */
+.standard-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+  border: 1px solid var(--black);
+  justify-content: center; 
+}
+
+.standard-form select {
+  width: 110px; /* Set the width to your desired value */
+}
+
+.standard-form input[type="text"],
+.standard-form input[type="number"],
+.standard-form input[type= "date"] {
+    flex: 1;
+    width: 120px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--black);
+}
+.standard-form label {
+  flex-basis: 30px; 
+  margin-right: 10px;
+}
+/* Hardcode Update User Input width */
+#input-update-userID {
+  width: 80px; 
+}
+
+/* STYLES FOR MOVIES, USERS, SUBSCRIPTIONS, SUBTIERS, GENRES, RATINGS, MOVIESGENRES TABLE */
+#movie-table, #user-table, #subscription-table, #subTier-table, #genre-table,
+#ratings-table, #movie-genre-table {
+  margin: 0 auto; 
+  font-size: 1.1em;
+  width: 100%;
+}
+
+  /* Styles for STOCK PICKS PAGE */
+  .outer-container2 {
+    background-color: var(--gray);
+    margin: 0;
+    padding: 0%;
+    
+    justify-content: center; /* Horizontally center the content */
+    align-items: center;
+}
+
+/* Styles for INNER LOGIN BOX */
+.outer-container2 {
+    background-color: var(--gray);  
+    padding: 2.5%; 
+    border-radius: 15px; /* Use this for rounded corners */
+    border: 1.5px solid var(--black);
+    margin: auto;
+    text-align: center;
+    max-width: 525px;
+    width: 100%;
+    font-size: 1.3em;
+}
+
+/* Styles for login form elements */
+.outer-container2 label,
+.outer-container2 input,
+.outer-container2 a,
+.outer-container2 button {
+    margin: .5em 0; /* Adjust the vertical margin between elements */
+}
+.input-group {
+  margin-bottom: 10px; /* Adjust spacing between groups */
+}
+
+.input-group1 input {
+  display: inline;
+
+}
+
+/* Styles for login form elements */
+.outer-container2 div {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Left-align the content */
+  margin-bottom: 10px; /* Adjust spacing between elements */
+}
+
+.outer-container2 label {
+  margin-bottom: 5px; /* Adjust vertical spacing between label and input */
+}
+
+/*************************/
+/* Styles for LOGIN BOX */
+.outer-container {
+    background-color: var(--blue);
+    margin: 0;
+    padding: 0% 17% 0 17%;
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center;
+}
+
+/* Styles for INNER LOGIN BOX */
+.inner-container {
+    background-color: var(--gray);  
+    padding: 2.5%; 
+    border-radius: 15px; /* Use this for rounded corners */
+    border: 1.5px solid var(--black);
+    margin: auto;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    font-size: 1.3em;
+}
+
+/* Styles for login form elements */
+.inner-container label,
+.inner-container input,
+.inner-container a,
+.inner-container button {
+    margin: .5em 0; 
+    
+}
+
+/* Styles for login form elements */
+.inner-container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  margin-bottom: 10px; 
+}
+
+.inner-container label {
+  margin-bottom: 5px; 
+}
+
+/* PASSWORD ICON */
+.input-container {
+  position: relative;
+  width: 300px; 
+}
+
+/* STYLES for POP-UP Button */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content p {
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  margin-right: 10px;
+}
+
+
+/* MAIN VIEWPORT HERE: Set the section to white */
+section {
+background-color: var(--white);
+padding: 2%;
+}
+
+article {
+margin-top: 20px;
+border-top: 2px solid var(--blue);
+}
+
+/* Style and formatting for the footer */
+footer {
+background-color: var(--white);
+margin: 20px 0 20px 0 ;
+padding: 1.5px;
+border: 2px solid var(--white);
+text-align: center;
+font-weight: bold;
+font-size: 1.4em;
+}
+  
+  /* ----- Anchors ----- Text links */
+  /* Set the color to black for link */
+  a:link {
+    color: var(--black);
+    text-decoration: none; 
+    
+  }
+  /* Use tan and aqua for hover */
+  a:hover {
+    color: var(--lightBlue);
+    
+  }
+  
+  /*  ----- Navigation ----- Override text links for navigation only.  */
+  nav {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    
+  }
+  /* Styles for Nav Bar */
+  nav a {
+    font-family: 'Playfair Display', sans-serif;
+    background-color: var(--white);
+    border: 1.5px solid var(--black);
+    border-radius: 5px 5px  0 0;
+    color: var(--black);
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1;
+    margin-right: 3px;
+    padding: 8px 37px;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+
+  /* Styles for when hovering over nav bar */
+  nav a:hover {
+    background-color: var(--lightBlue);
+    color: darkblue;
+  }
+
+  /* Navigation for local class tag */
+.local {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start of the container */
+  flex-wrap: wrap; /* Allow items to wrap to the next row */
+  max-height: 60px; /* Maximum height for two rows (height + margin) */
+}
+
+/* Navigation for local class tag */
+  a.local {
+    background-color: #05A;
+    border: 2px solid darkblue;
+    border-radius: 3px;
+    color: var(--tan);
+    font-size: 0.75em;
+    font-weight: bold;
+    line-height: 1;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    padding: .5%;
+    text-decoration: none;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Navigation hover for local */
+  a.local:hover {
+    background-color: skyblue;
+    color: darkblue;
+  }
+  
+  /*  -----  Typography  ----- */
+  
+  /* Global styles for headers */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Jacques Francois', sans-serif;
+  } 
+  /* Control the Banner's styles */
+  h1 {
+    font-family: 'Playfair Display', sans-serif;
+    color: var(--black);
+  }
+  
+  /*  ----- Form ----- */
+  /* Configure the styles for the contact form */
+  form {
+    background-color: var(--blue);
+    color: var(--black);
+    font-weight: bold;
+    padding: 1%;
+    border: 1px solid var(--black);
+
+  }
+  /* Fieldset */
+  fieldset {
+    text-align: left;
+    margin: 1%;
+  }
+  
+  /* Set the text color for the legend to dark blue and style it */
+  legend {
+    color: var(--black);
+    padding: 0 2% 2% 2%;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: 1px solid var(--black);
+    margin-top: 25px;
+
+  }
+  /* Set the label color to black */
+  label {
+    margin-top: 10px;
+    color: var(--black);
+    font-weight: normal;
+  }
+  /* Set the labels to bold */
+  label.required{
+    font-weight: bold;
+  }
+  /* Set label with class feedbacktext to bold */
+  label.feedbacktext{
+    font-weight: bold;
+  }
+  /* Set label with class feedbacktext to bold */
+  label.moreinfo{
+    font-weight: bold;
+  }
+
+/* Configure style settings for the submission button */
+button {
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 0% 3% 0 3%;
+  border: 1.5px solid var(--black);
+  font-weight: bold;
+  font-family: 'Jacques Francois';
+  font-size: 1.2em;
+  display: block;
+  margin: auto;
+  border-radius: 5px;
+  width: 90px;
+  text-shadow: -1px -1px 0 var(--black),  
+                1px -1px 0 var(--black),  
+                -1px 1px 0 var(--black),  
+                1px 1px 0 var(--black); /* This creates a black outline around the text */
+}
+
+/* Add a hover option that inverts the colors */
+button:hover{
+  background-color: var(--black);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.btn {
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 0;
+  border: 1.5px solid var(--black);
+  font-weight: bold;
+  font-family: 'Jacques Francois';
+  font-size: 1.2em;
+  text-align: center;
+  justify-content: center;
+  display: block;
+  margin-right: 20px;
+  border-radius: 5px;
+  width: 90px;
+  text-shadow: -1px -1px 0 var(--black),  
+                1px -1px 0 var(--black),  
+                -1px 1px 0 var(--black),  
+                1px 1px 0 var(--black); /* This creates a black outline around the text */
+}
+
+/* Add a hover option that inverts the colors */
+.btn:hover{
+  background-color: var(--black);
+  color: var(--white);
+  cursor: pointer;
+}
+
+  /* Configure style settings for input */
+  input {
+    background-color: var(--white);
+    *::placeholder{color: var(--white)};
+    padding: 0.5%;
+    border: 1px solid var(--black);
+    :focus{background-color: var(--blue);}
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    label.required:after {
+      content: ' *'; 
+      color: red;     
+    }
+    border: 1px solid var(--blue);
+  }
+
+
+/* Configure article NEW styles */
+ .newHeaders {
+  font-family: 'Jacques Francois', sans-serif;
+  font-size: 1.8em; 
+  text-align: center ;
+}
+
+.baseHeaders {
+  font-family: 'Jacques Francois', sans-serif;
+}
+
+ .newArticles p {
+  font-family: 'Jacques Francois', sans-serif;
+  font-size: 1.1em;
+}
+
+.legend {
+  font-size: 1.7em;
+}
+
+.add-travels {
+  font-family: 'Jacques Francois', sans-serif;
+  font-size: 1.3em;
+  padding: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Add this line to center the children horizontally */
+  align-items: center; 
+  border: 1px solid var(--tan);
+  
+}
+
+/* Styles for EDITTRAVELPAGETABLE */
+
+#submit {
+  padding: 10%;
+}
+
+/* Style the input fields */
+input {
+  width: 180px;
+  padding: 8px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+#submit:hover {
+  background-color: #007BFF;
+  color: #fff;
+  cursor: pointer;
+}
+
+
+
+/* Configure Styles for the REACT ICONS */
+ .iconSize {
+  font-size: 20px;
+}
+
+  /* Configure style settings for the dropdown bar */
+  select {
+    background-color: var(--white);
+    color: var(--black);
+    padding: 0%;
+    width: 110px;
+    height: 30px;
+    margin-top: 10px;
+    border: 1px solid var(--black);
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  /* Configure style settings for textarea for user input */
+  textarea {
+    background-color: var(--tan);
+    *::placeholder{color: var(--white)};
+    padding: 1%;
+    border: 1px solid var(--black);
+    :focus{background-color: var(--blue);}
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 500px;
+    height: 80px;
+    border: 1px solid var(--blue);
+
+  }
+
+  /* Configure left-align style for contacts class in main*/
+  .contacts{
+    text-align: left;
+  }
+  
+  /*  ----- Classes for alignment, positioning, widths, grids, embellishments, and animation -----  */
+/* Here we use display: flex and row wrap to ensure the images display on the same row */
+.gallery { 
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.gallery figure {
+  width: 320px;
+  margin:.75%;
+  padding:0;
+}
+
+.gallery img {
+  width: 100%;
+  border: 1px solid var(--tan);
+}
+
+.gallery figcaption {
+  border: 1.5px solid var(--blue);
+  background-color: var(--tan);
+  text-align: center;
+  font-size: .7em;
+  display: block;
+  padding: 1%;
+}
+  
+  @keyframes App-logo {}
+  
+  /*   ===== TABLET  media query overrides mobile styles ===== */
+  @media all and (min-width: 600px) {}
+  
+  /*   ===== DESKTOP  media query overrides mobile and tablet styles ===== */
+  @media all and (min-width: 1080px) {}
+  
+  /*   ===== PRINT  media query overrides previous styles =====  */
+  @media print {}

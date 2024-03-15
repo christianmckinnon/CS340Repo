@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024 
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+        <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +37,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+     <main>
+        <section>
     <head>
     <title>Movies</title>
     <script language="JavaScript">
@@ -90,11 +90,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE -->
 <div id="update">
-  <legend><h2>Update Movie</h2></legend>
+  <legend><h2 style="text-align: center;">Update Movie</h2>
   <p>The below is a form to update a single Movie entry by movieID. The movie Title and Year 
     are <strong>required</strong>.
   </p>
     <form id="update-movie-form-ajax">
+        <fieldset class = "standard-form">
         
           <input type="hidden" name="update-movie-id" id="update-movie-id"/>
 
@@ -113,9 +114,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
           <label for="input-update-language">Language:</label>
           <input type="text" id="input-update-language" name="input-update-language">
 
-          <input class="btn" type="submit" id="UpdateSaveMove" value="Update Movie" onClick="browseMovieMovie()">
-          <input class="btn" type="button" value="cancel" onClick="browseMovieMovie()">
+          <input class="btn" type="submit" id="UpdateSaveMove" value="Update" onClick="browseMovieMovie()">
+          <input class="btn" type="button" value="Cancel" onClick="browseMovieMovie()">
+        </fieldset>
 	</form>
+    </legend>
 <script src="./js/update_movie.js"></script> 
 </div>
 <p></p>
@@ -124,7 +127,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <div id="browse">
 <table border="1" cellpadding="2", id = "movie-table">
   <tr>
-     <th colspan="8" style="text-align: center;">Movies</th>
+     <th colspan="8" style="text-align: center; font-size: 1.2em;">Movies</th>
     <tr>
             {{#each data.[0]}}
             <th>
@@ -148,8 +151,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[duration]}}</td>
             <td>{{this.[language]}}</td>
             <td><button onclick="deleteMovie({{this.[movieID]}})">Delete</button></td>
-            <td><button onClick="updateMovie({{this.[movieID]}}, '{{this.[title]}}', '{{this.[director]}}',
-                                            '{{this.[year]}}', '{{this.[duration]}}', '{{this.[language]}}')">Edit</button></td>
+            <td><button onClick='updateMovie({{this.[movieID]}}, "{{this.[title]}}", "{{this.[director]}}",
+                                            "{{this.[year]}}", "{{this.[duration]}}", "{{this.[language]}}")'>Edit</button></td>
         </tr>
         {{/each}}
 </table>
@@ -158,38 +161,43 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 </div> 
 <!-- INSERT -->
 <div id="insert">
-    <legend><h2>Add Movie:</h2></legend>
-    <p>This is a form to add a new Movie entry into the database. Neither title nor year can be NULL.</p>
+    <legend><h2 style="text-align: center;">Add Movie:</h2>
+    <p>This is a form to add a new Movie entry into the database. Neither title nor year can be NULL. Movie titles in the database 
+        must be UNIQUE! If a duplicate title is added, no entry will be added to the database.
+    </p>
     <form id="add-movie-form">
-        <fieldset>
-      <label for="input-title">Title: </label>
-      <input type="text" name="input-title" id="input-title" required> 
-      
-      <label for="input-director">Director: </label>
-      <input type="text" name="input-director" id="input-director">
+        <fieldset class = "standard-form">
+    <label for="input-title">Title:&nbsp;</label>
+    <input type="text" name="input-title" id="input-title" required> 
+    
+    <label for="input-director">Director:&nbsp;</label>
+    <input type="text" name="input-director" id="input-director">
 
-      <label for="input-year">Year: </label>
-      <input type="number" name="input-year" id="input-year" required>
+    <label for="input-year">Year:&nbsp;</label>
+    <input type="number" name="input-year" id="input-year" required>
 
-      <label for="input-duration">Duration: </label>
-      <input type="number" name="input-duration" id="input-duration">
+    <label for="input-duration">Duration:&nbsp;</label>
+    <input type="number" name="input-duration" id="input-duration">
 
-      <label for="input-language">Language: </label>
-      <input type="text" name="input-language" id="input-language">
+    <label for="input-language">Language:&nbsp;</label>
+    <input type="text" name="input-language" id="input-language">
   
-          <input class="btn" type="submit" id="addMovie" value="Add Movie" onClick="browseMovieMovie()">
-          <input class="btn" type="button" value="Cancel" onClick="browseMovieMovie()">
+    <input class="btn" type="submit" id="addMovie" value="Add" onClick="browseMovieMovie()">
+    <input class="btn" type="button" value="Cancel" onClick="browseMovieMovie()">
+    
     </fieldset>
 	</form> 
+    </legend>
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_movie.js"></script>
 </div>
-
+       </section>
+    </main>
 <p><br><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>

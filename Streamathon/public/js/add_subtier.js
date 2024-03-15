@@ -1,7 +1,8 @@
-// Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-// App.js, 2/27/2024
-// Citation: Code adapted from OSU 340 Github Step 5: Adding New Data
-// https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs
+/* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
+App.js, 3/15/2024
+Professor Curry
+Citation: Code adapted from OSU 340 Github: Node Starter App -  Step 5: Adding New Data
+https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data#modify-appjs */
 
 
 // This is our add_subtier.js form to implement adding new Subscription Tier entries into our database
@@ -64,7 +65,6 @@ addUserForm.addEventListener("submit", function (e) {
 
 
 // Creates a single row from an Object representing a single record from 
-// bsg_people
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -89,8 +89,6 @@ addRowToTable = (data) => {
     subscriptionTypeCell.innerText = newRow.subscriptionType;
     priceCell.innerText = newRow.price;
 
-    // No Delete Functionality for this Entity
-
     // Add the Edit button when adding a new movie entry
     editCell = document.createElement("td"); // Create a new table data cell
     editButton = document.createElement("button");
@@ -112,15 +110,4 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
     location.reload();
-
-    // COMMENT OUT as we're not using Dropdown currently
-
-    // // Find drop down menu, create a new option, fill data in the option (full name, id),
-    // // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh
-    // let selectMenu = document.getElementById("mySelect");
-    // let option = document.createElement("option");
-    // option.text = newRow.title;
-    // option.value = newRow.subTierID;
-    // selectMenu.add(option);
-    // // End of new step 8 code.
 }

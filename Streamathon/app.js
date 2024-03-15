@@ -1,5 +1,5 @@
 /* Hanjun Kim and Christian McKinnon CS 340 Portfolio Project
-2/27/2024, Professor Curry
+3/15/2024, Professor Curry
 
 Citation: The following code has been adapted from the OSU CS 340 Github node-starer-js Tuturial Steps 0, 3 and 5.
 
@@ -7,7 +7,6 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%200%20-%2
 https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars)
 https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
 */
-
 
 /*
     Streamathon Frontend and Backend: app.js is the driver where all .js and .hbs files are routed
@@ -41,7 +40,7 @@ var db = require('./database/db-connector')
 /* SQL QUERIES */
 show_ratings_table = `
     SELECT rat.ratingID, CONCAT(usr.firstName, ' ', usr.lastName) AS userName, mov.title AS movieTitle, 
-           rat.userRating AS userRating, rat.ratingDate AS ratingDate FROM Ratings rat
+    rat.userRating AS userRating, DATE_FORMAT(rat.ratingDate, "%Y-%m-%d") AS ratingDate FROM Ratings rat
         INNER JOIN Users usr ON rat.userID = usr.userID
         INNER JOIN Movies mov ON rat.movieID = mov.movieID
     GROUP BY rat.ratingID;
@@ -96,8 +95,8 @@ app.post('/add-rating-ajax', function(req, res)
     // Create the query and run it on the database
     query1 = `INSERT INTO Ratings (userID, movieID, userRating, ratingDate)
     SELECT
-        (SELECT userID FROM Users WHERE CONCAT(firstName, ' ', lastName) = '${data.userID}') AS userInput,
-        (SELECT movieID FROM Movies WHERE title = '${data.movieID}') AS movieInput, '${data.userRating}', '${data.ratingDate}';`
+        (SELECT userID FROM Users WHERE CONCAT(firstName, ' ', lastName) = "${data.userID}") AS userInput,
+        (SELECT movieID FROM Movies WHERE title = "${data.movieID}") AS movieInput, '${data.userRating}', '${data.ratingDate}';`
     
     db.pool.query(query1, function(error, rows, fields){
 
@@ -205,8 +204,8 @@ app.post('/add-movie-genre-ajax', function(req, res)
     // Create the query and run it on the database
     let insert_movgen = `INSERT INTO MoviesGenresTable (movieID, genreID)
                             SELECT
-                            (SELECT movieID FROM Movies WHERE title = '${data.title}') AS movieInput,
-                            (SELECT genreID FROM Genres WHERE genreType = '${data.genreType}') AS userInput;`
+                            (SELECT movieID FROM Movies WHERE title = "${data.title}") AS movieInput,
+                            (SELECT genreID FROM Genres WHERE genreType = "${data.genreType}") AS userInput;`
 
 
     db.pool.query(insert_movgen, function(error, rows, fields){
@@ -240,12 +239,12 @@ app.put('/put-movie-genre-ajax', function(req,res,next){
                                     SET genreID = (
                                             SELECT genreID
                                             FROM Genres
-                                            WHERE genreType = '${data.genreType}'
+                                            WHERE genreType = "${data.genreType}"
                                         )
                                     WHERE movieID = (
                                             SELECT movieID
                                             FROM Movies
-                                            WHERE title = '${data.title}');`
+                                            WHERE title = "${data.title}");`
   
           // Run the UPDATE query
           db.pool.query(queryUpdateMovieGenre, [title, genreType], function(error, rows, fields){
@@ -347,7 +346,7 @@ app.post('/add-genre-ajax', function(req, res)
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Genres (genreType)
-    VALUES ('${data.genreType}');`
+    VALUES ("${data.genreType}");`
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -437,7 +436,7 @@ app.post('/add-subTier-ajax', function(req, res)
 
     // Create the query and run it on the database
     query1 = `INSERT INTO SubscriptionTiers (subscriptionType, price)
-    VALUES ('${data.subscriptionType}', '${data.price}');`
+    VALUES ("${data.subscriptionType}", '${data.price}');`
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -534,7 +533,7 @@ app.post('/add-user-ajax', function(req, res)
     }
     // Create the query and run it on the database
     query1 = `INSERT INTO Users (firstName, lastName, email, age)
-    VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.age}');`
+    VALUES ("${data.firstName}", "${data.lastName}", "${data.email}", '${data.age}');`
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -642,54 +641,60 @@ app.get('/movies', function(req, res)
 });
     
 // ROUTES Section: ADD MOVIE
-app.post('/add-movie-ajax', function(req, res) 
-{
-    // Capture the incoming data and parse it back to a JS object
-    let data = req.body;
+app.post('/add-movie-ajax', function(req, res) {
+    let data = req.body; // Capture the incoming data and parse it back to a JS object
 
     // Capture NULL values: duration and language
-    // If a duration is not entered, it defaults to a value of 0
     let duration = parseInt(data.duration);
-    if (isNaN(duration))
-    {
-        duration = 'NULL'
+    if (isNaN(duration)) {
+        duration = 'NULL';
     }
 
     let language = data.language;  // language is a string
-
     if (language === null || language.toLowerCase() === 'null') {
         language = 'NULL';
     }
 
-    // Create the query and run it on the database
-    query1 = `INSERT INTO Movies (title, director, year, duration, language)
-    VALUES ("${data.title}", "${data.director}", '${data.year}', '${data.duration}', '${data.language}');`
-    db.pool.query(query1, function(error, rows, fields){
-
-        // Check to see if there was an error
+    // Enforce UNIQUE Movie Titles here:
+    let checkQuery = `SELECT COUNT(*) AS count FROM Movies WHERE title = ?`;
+    db.pool.query(checkQuery, [data.title], function(error, rows, fields) {
         if (error) {
-            console.log(error)
+            console.log(error);
             res.sendStatus(400);
+            return;
         }
-        else {
-            query2 = `SELECT * FROM Movies;`;
-            db.pool.query(query2, function(error, rows, fields){
 
-                // If there was an error on the second query, send a 400
-                if (error) {
-                    
-                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                    console.log(error);
-                    res.sendStatus(400);
-                }
-                // If all went well, send the results of the query back.
-                else {
-                    res.send(rows);
-                }
-            })
+        const count = rows[0].count;
+
+        if (count > 0) {
+            res.status(409).send('Title already exists in the database');
+            return;
         }
-    })
+
+        // Title doesn't exist, proceed with the INSERT query
+        let query1 = `INSERT INTO Movies (title, director, year, duration, language)
+        VALUES ("${data.title}", "${data.director}", '${data.year}', '${data.duration}', '${data.language}');`;
+
+        db.pool.query(query1, [data.title, data.director, data.year, duration, language], function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+                return;
+            }
+
+            let query2 = `SELECT * FROM Movies`;
+            db.pool.query(query2, function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400); 
+                    return;
+                }
+                res.send(rows);
+            });
+        });
+    });
 });
+
 
 // DELETE MOVIE
 app.delete('/delete-movie-ajax/', function(req,res,next){

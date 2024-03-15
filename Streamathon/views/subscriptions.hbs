@@ -1,4 +1,4 @@
-<!--Hanjun Kim and Christian McKinnon, CS340 
+<!--Hanjun Kim and Christian McKinnon, CS340, 3/15/2024 
 Code Adapted from CS340 Canvas Module Week 6: Exploration - Web Application Technology and Steps 3 and 7: CS 340 GitHub Guide
 
 Citations:
@@ -13,20 +13,18 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CS 340: Project Step 3</title>
+    <title>CS 340: Project Streamathon</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>-->
-    <!--<script src='main.js'></script>-->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!--<link rel="manifest" href="site.webmanifest">-->
 </head>
 <body>
-     <!-- Header for Project Step 3 Draft (will update this for new assignments) -->
+     <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon: Project Step 5 for CS 340 (Team AceSync - Group 10)</h1>
+         <h1>Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -39,6 +37,8 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <a href = "ratings">Ratings</a>
         <a href = "movgentable">MoviesGenresTable</a>
     </nav>
+    <main>
+        <section>
      <head>
     <title>Subscriptions</title>
     <script language="JavaScript">
@@ -84,19 +84,20 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 
 <!-- UPDATE Subscription Tier -->
 <div id="update">
-  <legend><h2>Update Subscription</h2></legend>
+  <legend><h2 style="text-align: center;">Update Subscription</h2>
   <p> This is a form that allows a user to update a Subscription. The userName is autopopulated,
       then we can select a subscriptionType, their subscriptionStatus and whether they will AutoRenew their plan.<br>
-      <strong>To set the FK userID (username) to NULL, simply delete the userName in the textbox to remove the relationship.</strong>
-      <br><strong>Important:</strong> To re-add a User whose FK has been removed, please re-enter their name (EXACTLY). Also, if any other name 
-        other than the original userName is typed, the userName will default to NULL as the userName and userID are permanently linked.
-      </p>
+      <ul>
+  <li><strong>To set the FK userID (username) to NULL, simply delete the userName in the textbox to remove the relationship.</strong></li>
+  <li><strong>Important:</strong> To re-add a User whose FK has been removed, please re-enter their name (EXACTLY). Also, if any other 
+  name other than the original userName is typed, the userName will default to NULL as the userName and userID are programmatically linked.</li>
+    </ul></p>
     <form id="update-subscription-form-ajax">
-        
+        <fieldset class = "standard-form">
         <input type="hidden" name="update-subscription-id" id="update-subscription-id"/>
 
         <label for="input-update-userID">Username (userID): </label>
-        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" > <!-- readonly="readonly" disabled-->
+        <input type="text" class="hidden" name="input-update-userID" id="input-update-userID" > 
 
 
         <label for="input-update-subTierID">Subscription Type: </label>
@@ -119,10 +120,11 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
         <option value=2>No Auto Renew</option>
         </select>
 
-        <input class="btn" type="submit" id="UpdateSaveSubscription" value="Update Subscription" onClick="browseSubscription()">
+        <input class="btn" type="submit" id="UpdateSaveSubscription" value="Update" onClick="browseSubscription()">
         <input class="btn" type="button" value="Cancel" onClick="browseSubscription()">
-          
+        </fieldset>
 	</form>
+    </legend>
 <script src="./js/update_subscription.js"></script> 
 </div>
 <p></p>
@@ -151,18 +153,19 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
             <td>{{this.[subscriptionType]}}</td>
             <td>{{this.[subscriptionStatus]}}</td>
             <td>{{this.[autoRenew]}}</td>
-            <td><button class="updateSubscriptionButton" onClick="updateSubscription('{{this.[subscriptionID]}}', '{{this.[userName]}}')">Edit</button></td>
+            <td><button class="updateSubscriptionButton" onClick='updateSubscription({{this.[subscriptionID]}}, "{{this.[userName]}}")'>Edit</button></td>
         </tr>
         {{/each}}
 </table>
 <p>&nbsp;</p>
 </div> 
-
+</section>
+    </main>
 <p><br><br><br><br></p>
 <!-- Copyright of our team as footer -->
 <footer>
     <p>
-        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10)
+        &copy; 2024 Hanjun Kim & Christian McKinnon (Team AceSync - Group 10) for CS 340
     </p>
 </footer>
 </body>
