@@ -53,30 +53,44 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
                 content catalog.
             </p>
             <!--Description of Entities using an unordered list-->
-            <p>The below lists our entities and details brief descriptions about them:</p>
             <body>
                 <h2>Streamathon Entities</h2>
                 <ul>
                     <li>
-                        <strong>Movies:</strong> Represents Streamathon’s movies on offer and their details, with attributes including the movieID, title, director, year, duration, and language of the film.
-                    </li>
+                        <strong>Movies:</strong> Represents Streamathon’s movies on offer and their details, with attributes including the movieID, 
+                        title, director, year, duration, and language of the film.
+                    </li><br>
                     <li>
-                        <strong>Users:</strong> Records the details and preferences of Streamathon’s 2,000+ users, including the attributes userID, first and last name, email, and age.
-                    </li>
+                        <strong>Users:</strong> Records the personal data of Streamathon’s 2,000+ users, including the attributes: userID, 
+                        first and last name, email, and age.
+                    </li><br>
                     <li>
-                        <strong>Subscriptions:</strong> This entity represents users' status and whether autorenew has been activated for a particular user’s subscription. Its attributes include subscriptionID, subTypeID, autoRenew, and subscriptionStatus.
-                    </li>
+                        <strong>Subscriptions:</strong> This entity represents a User's Subscription which includes their subscriptionID, userID,
+                        subTierID, subscriptionStatus, and autoRenew. On this site, we represent userID as userName and subTierID 
+                        as subscriptionType.
+                    </li><br>
                     <li>
-                        <strong>SubscriptionTiers:</strong> An entity that includes the choice of subscriptions available for Streamathon users. They can select from Basic, Ad-Free, and Premium tiers that are priced at 5.99, 9.99, and 14.99 USD respectively. User’s Subscriptions are billed monthly. Its entities are subTierID, subscriptionType, and price.
-                    </li>
+                        <strong>SubscriptionTiers:</strong> An entity that includes the choice of subscriptions available for Streamathon users. 
+                        They can select from None, Basic, Ad-Free, and Premium tiers that are priced at 0.00, 5.99, 9.99, and 14.99 USD respectively. User’s 
+                        Subscriptions are billed monthly. Its entities are subTierID, subscriptionType, and price.
+                    </li><br>
                     <li>
-                        <strong>Genres:</strong> In this entity, we outline the different possible genres that will correspond to Movies as they have a M:N relationship. Its attributes are genreID and genreType.
-                    </li>
+                        <strong>Genres:</strong> This entity outlines the different possible genre categories that a movie can belong to. These Genres 
+                        exhibit their M:N relationship with Movies in the MoviesGenres Intersection Table. The Genres table’s attributes include genreID 
+                        and genreType, where genreType represents the genre category.
+                    </li><br>
                     <li>
-                        <strong>Ratings:</strong> This is an entity that functions as an intersection table / composite entity. It represents Ratings as a link between Movies and Users. This is the case as a user can rate many Movies, and a Movie can be rated by many Users. After viewing a movie, Users have the option to award a rating between 1 and 5 stars. Within the table, we can view the rating an individual user assigned to a movie. The attributes include ratingID, userID, movieID, userRating, and ratingDate.
-                    </li>
+                        <strong>Ratings:</strong> This is an entity that functions as an intersection table / composite entity. It represents 
+                        Ratings as a link between Movies and Users. This is the case as a User can rate many Movies, and a Movie can be rated 
+                        by many Users. After viewing a movie, Users have the option to award a rating between 1 and 5. Within the table, 
+                        we can view the rating an individual user assigned to a movie. The attributes include ratingID, userID, movieID, userRating, 
+                        and ratingDate. On this site, the userID is represented as userName and movieID is represented as by title.
+                    </li><br>
                     <li>
-                        <strong>MoviesGenresTable:</strong> An intersection table that keeps track of the M:N relationship between the Movies and Genres entities. The table will contain as foreign keys, movieID and genreID, as attributes, that are references to both primary keys from their respective tables.
+                        <strong>MoviesGenresTable:</strong> An intersection table that keeps track of the M:N relationship between the Movies 
+                        and Genres entities. The table will contain as foreign keys, movieID and genreID, as attributes, that are references to
+                        both primary keys from their respective tables. On this site, movieID is represented by the movie title and genreID is 
+                        represented by its genreType.
                     </li>
                 </ul>
             </body>
