@@ -17,14 +17,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
     <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
 </head>
 <body>
      <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon Database Management System</h1>
+        <h1><img src="/favicon.ico" alt="My favicon" style="width: 48px; height: 48px;">&nbsp;Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -82,6 +80,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body onload="browseUserUser()">
 
 <h2>Users Entity</h2>
+<h4>(Please use Google Chrome to View)</h4>
     <p> Within the Users entity, a database administrator can ADD, UPDATE, or DELETE a User. 
         Updated User attributes only take place within this entity and so no UPDATE CASCADE is 
         required. When a User is removed from the database, an ON DELETE CASCADE ensures that the 
@@ -106,7 +105,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
           <input type="text" name="input-update-email" id="input-update-email" required>
 
           <label for="input-update-age">Age: </label>
-          <input type="number" name="input-update-age" id="input-update-age">
+          <input type="text" name="input-update-age" id="input-update-age">
 
           <input class="btn" type="submit" id="UpdateSaveUser" value="Update" onClick="browseUserUser()">
           <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">
@@ -170,7 +169,7 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
       <input type="text" name="input-email" id="input-email" required>
 
       <label for="input-age">Age: </label>
-      <input type="number" name="input-age" id="input-age">
+      <input type="text" name="input-age" id="input-age">
   
           <input class="btn" type="submit" id="addUser" value="Add" onClick="browseUserUser()">
           <input class="btn" type="button" value="Cancel" onClick="browseUserUser()">

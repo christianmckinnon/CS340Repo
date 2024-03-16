@@ -17,14 +17,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
     <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
 </head>
 <body>
      <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon Database Management System</h1>
+        <h1><img src="/favicon.ico" alt="My favicon" style="width: 48px; height: 48px;">&nbsp;Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -72,11 +70,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body onload="browseRating()">
 
     <h2>Ratings Entity</h2>
+    <h4>(Please use Google Chrome to View)</h4>
         <p> The Ratings composite entity implements the M:N relationship between Users and Movies. On this page, a database 
                 administrator can INSERT, READ, UPDATE, and DELETE a Rating. Adding a Rating requires a corresponding userID and movieID, 
                 while updating one requires only the PK, the ratingID. When a Rating is deleted, it has no effect on its FKs, 
                 Users or Movies. Note: a User cannot create duplicate entries of a Rating with the same movieID. This constraint 
-                is in place to prevent abusing our rating system with inflated ratings. </p>
+                is in place to prevent abusing our rating system with inflated ratings. (Nothing here can be NULL). </p>
 
 <!-- UPDATE Rating-->
 <div id="update">

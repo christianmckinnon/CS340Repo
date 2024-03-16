@@ -60,6 +60,11 @@ Citation: https://canvas.oregonstate.edu/courses/1933705/pages/module-4-overview
     width:auto;
     align-items: center;
   }
+ /* For Favicon */
+  .h1 img {
+    width: 64px;
+    height: 64px;
+}
 
   /* Set the formatting for main */
   main {
@@ -351,6 +356,10 @@ font-size: 1.4em;
   h1 {
     font-family: 'Playfair Display', sans-serif;
     color: var(--black);
+  }
+
+  h4 {
+    font-style: italic;
   }
   
   /*  ----- Form ----- */

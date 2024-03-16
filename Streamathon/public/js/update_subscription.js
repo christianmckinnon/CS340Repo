@@ -53,8 +53,7 @@ updateSubscriptionForm.addEventListener("submit", function (e) {
             updateRow(xhttp.response, subscriptionIDValue);
 
             // Reset required fields: ONLY substatus and autorenew to autoupdate
-            inputSubscriptionStatus.value = '';
-            inputAutoRenew.value = '';
+                
             location.reload(); // Reload page to dynamically update
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {

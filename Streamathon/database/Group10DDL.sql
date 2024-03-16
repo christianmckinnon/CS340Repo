@@ -1,6 +1,6 @@
--- Project Step 2 Draft: Normalized Schema + DDL with Sample Data for Streamathon by Team AceSync, Group 10
+-- Project Streamathon: Portfolio Project - Step 6 by Team AceSync, Group 10
 
--- Team Members: Hanjun Kim and Christian McKinnon, updated 2/14/2024
+-- Team Members: Hanjun Kim and Christian McKinnon, Updated 3/15/2024
 
 -- Citation 1: Project Step 2 Draft, Citation 2: Exploration - MySQL Cascade on Canvas by Professor Curry
 
@@ -21,16 +21,6 @@ SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
 -- For all tables, we use the recommended syntax, "CREATE OR REPLACE," to minimize import errors
-
--- First let's CREATE a table for our Users Entity:
--- CREATE OR REPLACE TABLE Users 
---     (userID INT AUTO_INCREMENT PRIMARY KEY,
---     subscriptionID INT(11),
---     firstName VARCHAR(50) NOT NULL,
---     lastName VARCHAR(50) NOT NULL,
---     email VARCHAR(255) NOT NULL,
---     age INT(11),
---     FOREIGN KEY (subscriptionID) REFERENCES Subscriptions(subscriptionID) ON DELETE CASCADE);
 
 CREATE OR REPLACE TABLE Users 
     (userID INT AUTO_INCREMENT PRIMARY KEY,
@@ -109,14 +99,6 @@ VALUES
     (8, 'Avatar', 'James Cameron', 2009, 162, NULL); -- language is English
 
 -- Next let's insert our Example Data into the Users Table:
--- INSERT INTO Users (userID, subscriptionID, firstName, lastName, email, age)
--- VALUES
-    -- (1000, 10001, 'Jack', 'Smith', 'js@gmail.com', 28),
-    -- (1001, 10004, 'Xiao', 'Li', 'lx1@gmail.com', 45),
-    -- (1002, 10000, 'Rachael', 'Johnson', 'rj22@yahoo.com', 19),
-    -- (1003, 10002, 'Pedro', 'Gonzalez', 'pgw@ymail.com', 62),
-    -- (1004, 10003, 'Ebrahim', 'Jones', 'ej00@gmail.com', NULL); -- age was 24, trying NULL value for age
-
 INSERT INTO Users (userID, firstName, lastName, email, age)
 VALUES
     (1000, 'Jack', 'Smith', 'js@gmail.com', 28),
@@ -126,21 +108,13 @@ VALUES
     (1004, 'Ebrahim', 'Jones', 'ej00@gmail.com', NULL); -- age was 24, trying NULL value for age
     
 -- Next let's insert our Example Data into the Subscriptions Table:
--- INSERT INTO Subscriptions (subscriptionID, subTierID, subscriptionStatus, autoRenew)
--- VALUES
---     (10000, 40000, 1, 0),
---     (10001, 40001, 1, 1),
---     (10002, 40002, 0, 1),
---     (10003, 40000, 0, 1),
---     (10004, 40002, 1, NULL); -- trying NULL for auto-renew
-
 INSERT INTO Subscriptions (subscriptionID, userID, subTierID, subscriptionStatus, autoRenew)
 VALUES
     (10000, 1000, 40000, 1, 0),
     (10001, 1001, 40001, 1, 1),
     (10002, 1002, 40002, 0, 1),
     (10003, 1003, 40000, 0, 1),
-    (10004, 1004, 40002, 1, NULL); -- trying NULL for auto-renew
+    (10004, 1004, 40002, 1, 0); 
 
 -- Next let's insert our Example Data into the SubscriptionTiers Table:
 INSERT INTO SubscriptionTiers (subTierID, subscriptionType, price)
@@ -188,7 +162,8 @@ VALUES
 
 
 -- Here we set up a trigger to automatically add new User entries to the Subscriptions entity
--- It adds the new User to Subscriptions with NULL values as that User does not yet have a Subscription
+-- It adds the new User to Subscriptions with NULL subTierID, subscriptionStatus and autoRenew 
+-- values as that User does not yet have a Subscription.
 DELIMITER //
 
 CREATE OR REPLACE TRIGGER insert_subscription_after_new_user
@@ -205,8 +180,6 @@ DELIMITER ;
 -- As recommended, we reset foreign key checks to 1 at the end of our script
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
-
-
 
 
 ------------------------------
@@ -249,3 +222,5 @@ COMMIT;
 -- SELECT Movies.title, avg(Ratings.userRating) AS average_rating FROM Movies
 --     JOIN Ratings ON Movies.movieID = Ratings.movieID
 --     GROUP BY Movies.title;
+
+-- END DDL

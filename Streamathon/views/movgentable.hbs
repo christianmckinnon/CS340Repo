@@ -17,15 +17,13 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive, nofollow" />
     <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
 
 </head>
 <body>
      <!-- Header for Project Step 6 Final -->
     <header>
-        <h1>Streamathon Database Management System</h1>
+        <h1><img src="/favicon.ico" alt="My favicon" style="width: 48px; height: 48px;">&nbsp;Streamathon Database Management System</h1>
     </header>
     <!--A navigation bar with 7 Entities and 1 Homepage-->
     <nav>
@@ -78,11 +76,12 @@ https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%2
 <body onload="browseMovieGenre()">
 
 <h2>MoviesGenres Intersection Table</h2>
-        <!--The following is our table with example data for the MoviesGenresTable Intersection Table-->
+<h4>(Please use Google Chrome to View)</h4>
         <p> This Intersection Table represents the M:N relationship between the Movies and Genres Entities. 
             Movies and their corresponding Genres can be <strong>added</strong> and <strong>updated</strong> on this page. 
             When a Movie is deleted on the Movies page, the corresponding row with the same Movie (movieID) and Genre 
-            (genreID) will be removed from this table as well (nothing here should be NULL).
+            (genreID) will be removed from this table as well (nothing here should be NULL). If a Genre is updated in the 
+            Genres entity, an ON UPDATE CASCADE will update the Genre here as well.
         </p>
 
 <!-- UPDATE MoviesGenresTable -->
